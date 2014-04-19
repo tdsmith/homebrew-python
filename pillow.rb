@@ -8,19 +8,21 @@ class Pillow < Formula
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on 'little-cms'
-  depends_on 'graphicsmagick'
   depends_on 'freetype'
   depends_on 'jpeg'
-  depends_on 'libtiff'
+  depends_on 'libtiff' => :recommended
+  depends_on 'little-cms2' => :recommended
+  depends_on 'openjpeg21' => :recommended
+  depends_on 'webp' => :recommended
 
   def install
-    # Help pillow find zlib and little-cms (Note freetype2 is detected correctly)
+    # Help pillow find zlib and freetype2
     inreplace "setup.py" do |s|
       s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{MacOS.sdk_path}/usr/lib', '#{MacOS.sdk_path}/usr/include')" unless MacOS::CLT.installed?
-      s.gsub! "LCMS_ROOT = None", "LCMS_ROOT = ('#{Formula["littlecms"].opt_prefix}/lib', '#{Formula["littlecms"].opt_prefix}/include')"
+      s.gsub! "LCMS_ROOT = None", "LCMS_ROOT = ('#{Formula["littlecms"].opt_prefix}/lib', '#{Formula["littlecms"].opt_prefix}/include')" if build.with? 'little-cms2'
       s.gsub! "JPEG_ROOT = None", "JPEG_ROOT = ('#{Formula["jpeg"].opt_prefix}/lib', '#{Formula["jpeg"].opt_prefix}/include')"
-      s.gsub! "TIFF_ROOT = None", "TIFF_ROOT = ('#{Formula["libtiff"].opt_prefix}/lib', '#{Formula["libtiff"].opt_prefix}/include')"
+      s.gsub! "JPEG2K_ROOT = None", "JPEG2K_ROOT = ('#{Formula["openjpeg21"].opt_prefix}/lib', '#{Formula["openjpeg21"].opt_prefix}/include')" if build.with? 'openjpeg21'
+      s.gsub! "TIFF_ROOT = None", "TIFF_ROOT = ('#{Formula["libtiff"].opt_prefix}/lib', '#{Formula["libtiff"].opt_prefix}/include')" if build.with? 'libtiff'
       s.gsub! "FREETYPE_ROOT = None", "FREETYPE_ROOT = ('#{Formula["freetype"].opt_prefix}/lib', '#{Formula["freetype"].opt_prefix}/include')"
     end
 
