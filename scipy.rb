@@ -2,19 +2,9 @@ require 'formula'
 
 class Scipy < Formula
   homepage 'http://www.scipy.org'
-  url 'https://downloads.sourceforge.net/project/scipy/scipy/0.13.3/scipy-0.13.3.tar.gz'
-  sha1 '2c7d53fc1d7bfe0a3ab5818ef6d84cb5d8cfcca4'
+  url 'https://downloads.sourceforge.net/project/scipy/scipy/0.14.0/scipy-0.14.0.tar.gz'
+  sha1 'faf16ddf307eb45ead62a92ffadc5288a710feb8'
   head 'https://github.com/scipy/scipy.git'
-
-  # Due to possibly corrupted installs out there making, because
-  # we had the `-D__ACCELERATE` flag used for clang for a few days, which
-  # seems to make all kind of trouble (you can test with `brew test -v scipy)
-  revision 1
-
-  devel do
-    url 'https://downloads.sourceforge.net/project/scipy/scipy/0.14.0rc1/scipy-0.14.0rc1.tar.gz'
-    sha1 '07dd73a5f4eb2c9561bc6767e7ec8c24a1018456'
-  end
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -65,7 +55,6 @@ class Scipy < Formula
       ENV.append 'CPPFLAGS', '-D__ACCELERATE__' if ENV.compiler =~ /gcc-(4\.[3-9])/
     end
 
-    rm_f 'site.cfg' if build.devel?
     Pathname('site.cfg').write config
 
     # gfortran is gnu95
