@@ -50,9 +50,14 @@ class Scipy < Formula
     else
       # The Accelerate.framework uses a g77 ABI
       ENV.append 'FFLAGS', '-ff2c'
+
+      # https://github.com/Homebrew/homebrew-python/issues/110
+      # There are ongoing problems with gcc+accelerate.
+      odie "Please use brew install --with-openblas scipy to compile scipy using gcc." if ENV.compiler =~ /gcc-(4\.[3-9])/
+
       # https://github.com/Homebrew/homebrew-python/pull/73
       # Only save for gcc and allows you to `brew install scipy --cc=gcc-4.8`
-      ENV.append 'CPPFLAGS', '-D__ACCELERATE__' if ENV.compiler =~ /gcc-(4\.[3-9])/
+      # ENV.append 'CPPFLAGS', '-D__ACCELERATE__' if ENV.compiler =~ /gcc-(4\.[3-9])/
     end
 
     Pathname('site.cfg').write config
