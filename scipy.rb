@@ -64,6 +64,17 @@ class Scipy < Formula
 
     Pathname('site.cfg').write config
 
+    if HOMEBREW_CELLAR.subdirs.map{ |f| File.basename f }.include? 'gfortran'
+        opoo <<-EOS.undent
+            It looks like the deprecated gfortran formula is installed.
+            This causes build problems with scipy. gfortran is now provided by
+            the gcc formula. Please run:
+                brew rm gfortran
+                brew install gcc
+            if you encounter problems.
+        EOS
+    end
+
     # gfortran is gnu95
     Language::Python.each_python(build) do |python, version|
       system python, "setup.py", "build", "--fcompiler=gnu95", "install", "--prefix=#{prefix}"
