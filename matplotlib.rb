@@ -51,6 +51,7 @@ class Matplotlib < Formula
   depends_on 'ghostscript' => :optional
   # On Xcode-only Macs, the Tk headers are not found by matplotlib
   depends_on 'homebrew/dupes/tcl-tk' => :optional
+  cxxstdlib_check :skip
 
   if build.with? "python3"
     depends_on 'numpy' => 'with-python3'
