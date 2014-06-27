@@ -18,6 +18,8 @@ class Scipy < Formula
   numpy_options << "with-openblas" if build.with? "openblas"
   depends_on "numpy" => numpy_options
 
+  cxxstdlib_check :skip
+
   def install
     config = <<-EOS.undent
       [DEFAULT]
