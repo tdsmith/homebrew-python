@@ -70,6 +70,17 @@ class Numpy < Formula
     rm_f 'site.cfg' if build.devel?
     Pathname('site.cfg').write config
 
+    if HOMEBREW_CELLAR.subdirs.map{ |f| File.basename f }.include? 'gfortran'
+        opoo <<-EOS.undent
+            It looks like the deprecated gfortran formula is installed.
+            This causes build problems with numpy. gfortran is now provided by
+            the gcc formula. Please run:
+                brew rm gfortran
+                brew install gcc
+            if you encounter problems.
+        EOS
+    end
+
     Language::Python.each_python(build) do |python, version|
       resource("nose").stage do
         system python, "setup.py", "install", "--prefix=#{prefix}",
