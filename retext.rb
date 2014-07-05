@@ -1,36 +1,59 @@
-require 'formula'
+require "formula"
 
 class Retext < Formula
-  homepage 'http://sourceforge.net/projects/retext/'
-  url 'https://downloads.sourceforge.net/project/retext/ReText-4.0/ReText-4.0.0.tar.gz'
-  # 4.1 will drop python 2.x support!
-  sha1 '4a2ada905d790b4d8f3709271945008f50cd4d06'
+  homepage "http://sourceforge.net/projects/retext/"
+  url "https://downloads.sourceforge.net/project/retext/ReText-4.1/ReText-4.1.3.tar.gz"
+  sha1 "2b18319e17c2f62816926de46a2d18fa820e2e21"
 
-  depends_on :python
+  depends_on :python3
   depends_on 'pyqt'
-  depends_on 'markups' => :python
-  depends_on 'markdown' => :python
-  depends_on 'docutils' => :python
   depends_on 'enchant'
-  # depends_on LanguageModuleDependency.new(:python, 'pyenchant', 'enchant')
 
-  resource 'retext' do
-    url 'https://downloads.sourceforge.net/project/retext/Icons/ReTextIcons_r3.tar.gz'
-    sha1 'c51d4a687c21b7de3fd24a14a7ae16e9b0869e31'
+  resource "icons" do
+    url "https://downloads.sourceforge.net/project/retext/Icons/ReTextIcons_r3.tar.gz"
+    sha1 "c51d4a687c21b7de3fd24a14a7ae16e9b0869e31"
+  end
+
+  resource "markups" do
+    url "https://pypi.python.org/packages/source/M/Markups/Markups-0.4.tar.gz"
+    sha1 "47c9fa5c0ad7076b6b52346d59195f5651cb670a"
+  end
+
+  resource "markdown" do
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.1.tar.gz"
+    sha1 "2c9cedad000e9ecdf0b220bd1ad46bc4592d067e"
+  end
+
+  resource "docutils" do
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.11.tar.gz"
+    sha1 "3894ebcbcbf8aa54ce7c3d2c8f05460544912d67"
+  end
+
+  resource "pyenchant" do
+    url "https://pypi.python.org/packages/source/p/pyenchant/pyenchant-1.6.6.tar.gz"
+    sha1 "353b0b06cb29deef46298337afdd96ec71f01625"
   end
 
   def install
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    version = Language::Python.major_minor_version "python3"
+    ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{version}/site-packages"
 
-    # Copy icons to correct place an fix the path
-    icons_dir = lib/python.xy/'site-packages/ReText/icons/'
-    resource('retext').stage { icons_dir.install Dir['*.*'] }
-    inreplace lib/python.xy/'site-packages/ReText/__init__.py',
-              'icon_path = "icons/"',
-              "icon_path = '#{lib}python2.7/site-packages/ReText/icons/'"
-  end
+    res = %w{markups markdown docutils pyenchant}
+    res.each do |r|
+      resource(r).stage { system "python3", "setup.py", "install", "--prefix=#{libexec}" }
+    end
 
-  def caveats
-    "Run ReText by typing `retext.py`"
+    system "python3", "setup.py", "install", "--prefix=#{prefix}"
+    bin.env_script_all_files(prefix, :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install_symlink "retext" => "retext.py"
+
+    retext_dir = lib/"python#{version}/site-packages/ReText/"
+    icons_dir = retext_dir/"icons"
+    resource("icons").stage { icons_dir.install Dir["*"] }
+    inreplace retext_dir/"__init__.py", 'icon_path = "icons/"',
+                                        "icon_path = '#{icons_dir}/'"
+
+    inreplace retext_dir/"window.py", "menubar = QMenuBar(self)", "menubar = QMenuBar()"
   end
 end
