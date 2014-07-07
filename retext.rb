@@ -6,8 +6,10 @@ class Retext < Formula
   sha1 "2b18319e17c2f62816926de46a2d18fa820e2e21"
 
   depends_on :python3
-  depends_on 'pyqt'
-  depends_on 'enchant'
+  depends_on "pyqt" => "with-python3"
+  # workaround for Homebrew dependency issue, 7/7/14
+  depends_on "sip" => "with-python3"
+  depends_on "enchant"
 
   resource "icons" do
     url "https://downloads.sourceforge.net/project/retext/Icons/ReTextIcons_r3.tar.gz"
