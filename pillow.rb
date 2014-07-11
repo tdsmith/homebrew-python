@@ -2,8 +2,8 @@ require "formula"
 
 class Pillow < Formula
   homepage "https://github.com/python-imaging/Pillow"
-  url "https://github.com/python-imaging/Pillow/archive/2.5.0.tar.gz"
-  sha1 "4ee5c6e22d2a19b31b39a967d639b2cb8c660921"
+  url "https://pypi.python.org/packages/source/P/Pillow/Pillow-2.5.1.zip"
+  sha1 "3bd0eff568578d3f397cf25a7660749b928e8d5a"
   head "https://github.com/python-imaging/Pillow.git"
 
   # waiting on upstream resolution of JPEG2000 issues
