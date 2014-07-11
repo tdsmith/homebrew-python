@@ -12,6 +12,8 @@
 *   **Matplotlib**
     -   Support all optional deps, installable by brew
         (e.g. PyGTK, cairo, ghostscript, tk, freetype and libpng)
+*   **matplotlib-basemap** (library for plotting 2D data on maps)
+    -   Deps installed by brew (numpy, matplotlib, pillow, geos)
 *   **PIL** (`brew install pillow`)
     -   The *Python Image Library* in the newer distribution named "pillow"
     -   Support for zlib/PNG
