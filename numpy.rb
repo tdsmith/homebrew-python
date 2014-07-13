@@ -21,7 +21,6 @@ class Numpy < Formula
   depends_on :python3 => :optional
   depends_on :fortran
   depends_on NoUserConfig
-  depends_on 'homebrew/science/suite-sparse'  # for libamd and libumfpack
 
   option 'with-openblas', "Use openBLAS instead of Apple's Accelerate Framework"
   depends_on "homebrew/science/openblas" => :optional
@@ -39,17 +38,11 @@ class Numpy < Formula
     # Numpy is configured via a site.cfg and we want to use some libs
     # For maintainers:
     # Check which BLAS/LAPACK numpy actually uses via:
-    # xcrun otool -L $(brew --celar)/numpy/1.8.1/lib/python2.7/site-packages/numpy/linalg/lapack_lite.so
+    # xcrun otool -L $(brew --cellar)/numpy/1.8.1/lib/python2.7/site-packages/numpy/linalg/lapack_lite.so
     config = <<-EOS.undent
       [DEFAULT]
       library_dirs = #{HOMEBREW_PREFIX}/lib
       include_dirs = #{HOMEBREW_PREFIX}/include
-
-      [amd]
-      amd_libs = amd, cholmod, colamd, ccolamd, camd, suitesparseconfig
-      [umfpack]
-      umfpack_libs = umfpack
-
     EOS
 
     if build.with? 'openblas'
