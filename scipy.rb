@@ -26,11 +26,6 @@ class Scipy < Formula
       library_dirs = #{HOMEBREW_PREFIX}/lib
       include_dirs = #{HOMEBREW_PREFIX}/include
 
-      [amd]
-      amd_libs = amd, cholmod, colamd, ccolamd, camd, suitesparseconfig
-      [umfpack]
-      umfpack_libs = umfpack
-
     EOS
     if build.with? 'openblas'
       # For maintainers:
@@ -50,9 +45,6 @@ class Scipy < Formula
         include_dirs = #{openblas_dir}/include
       EOS
     else
-      # The Accelerate.framework uses a g77 ABI
-      ENV.append 'FFLAGS', '-ff2c'
-
       # https://github.com/Homebrew/homebrew-python/issues/110
       # There are ongoing problems with gcc+accelerate.
       odie "Please use brew install --with-openblas scipy to compile scipy using gcc." if ENV.compiler =~ /gcc-(4\.[3-9])/
