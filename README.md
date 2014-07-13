@@ -5,7 +5,6 @@
 ## Why not pip? ##
 
 *   **Numpy**
-    -   using *suite-sparse* for fast sparse matrices (amd,umfpack)
     -   optionally link against the *openBLAS* (--with-openblas)
 *   **SciPy**
     -   optionally link against the *openBLAS* (--with-openblas)
@@ -17,7 +16,6 @@
 *   **PIL** (`brew install pillow`)
     -   The *Python Image Library* in the newer distribution named "pillow"
     -   Support for zlib/PNG
-    -   Based on the fast(er) *graphicsmagick* (imagemagick compatible)
     -   *Freetype2* support
     -   *Little-CMS* (for color management)
 *   **PyGame** (Game development and provides bindings to SDL)
@@ -41,8 +39,9 @@ Check main Homebrew [Troubleshooting](https://github.com/Homebrew/homebrew/wiki/
 
 ## Python ##
 
-We support Python 2.x and 3.x.
-For simultaneous support, use the `brew install <formula> --with-python3`. And if you don't need Python 2.x support at all:
+Homebrew-python modules install to whichever Python is first in the system path. Our formulas are tested against Homebrew Python as well as the Python that came with your Mac.
+
+We support Python 2.x and 3.x. For simultaneous support, use the `brew install <formula> --with-python3`. And if you don't need Python 2.x support at all:
 `brew install <formula> --with-python3 --without-python`
 
 
