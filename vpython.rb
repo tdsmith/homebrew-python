@@ -6,7 +6,7 @@ class Vpython < Formula
   head "https://github.com/BruceSherwood/vpython-wx.git"
   homepage "http://vpython.org/"
 
-  # no python3 support from Homebrew boost yet
+  # no simultaneous python2+3 support from Homebrew boost yet
   depends_on :python
   depends_on "numpy"
   depends_on "wxpython"
@@ -16,6 +16,9 @@ class Vpython < Formula
   depends_on "boost" => boost_args
 
   needs :cxx11
+  # spurious errors because dependent numpy depends_on gcc through :fortran
+  # https://github.com/Homebrew/homebrew/issues/30474
+  cxxstdlib_check :skip
 
   def install
     ENV.cxx11
