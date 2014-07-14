@@ -38,6 +38,10 @@ class MatplotlibBasemap < Formula
       end
     end
 
+    inreplace "setup.py" do |s|
+      s.gsub! "GEOS_dir = None", "GEOS_dir = '#{Formula["geos"].opt_prefix}'"
+    end
+
     Language::Python.each_python(build) do |python, version|
       system python, "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt"
     end
