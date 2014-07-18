@@ -19,6 +19,15 @@ class Pillow < Formula
   depends_on "webp" => :recommended
   # depends_on "homebrew/versions/openjpeg21" if build.with? "openjpeg"
 
+  resource "nose" do
+    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.3.tar.gz"
+    sha1 "cad94d4c58ce82d35355497a1c869922a603a9a5"
+  end
+
+  def package_installed? python, module_name
+    quiet_system python, "-c", "import #{module_name}"
+  end
+
   def install
     inreplace "setup.py" do |s|
       s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{MacOS.sdk_path}/usr/lib', '#{MacOS.sdk_path}/usr/include')" unless MacOS::CLT.installed?
@@ -32,6 +41,14 @@ class Pillow < Formula
     ENV.append "CFLAGS", "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers" unless MacOS::CLT.installed?
 
     Language::Python.each_python(build) do |python, version|
+      unless package_installed?(python, "nose")
+        resource("nose").stage do
+          system python, "setup.py", "install", "--prefix=#{prefix}",
+                         "--single-version-externally-managed",
+                         "--record=installed.txt"
+          mv prefix/"man", share
+        end
+      end
       # don't accidentally discover openjpeg since it isn't working
       system python, "setup.py", "build_ext", "--disable-jpeg2000" # if build.without? "openjpeg"
       system python, "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
