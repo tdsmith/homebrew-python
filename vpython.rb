@@ -11,9 +11,9 @@ class Vpython < Formula
   depends_on "numpy"
   depends_on "wxpython"
 
-  boost_args = ["with-python"]
+  boost_args = []
   boost_args << "c++11" if MacOS.version < :mavericks
-  depends_on "boost" => boost_args
+  depends_on "boost-python" => boost_args
 
   needs :cxx11
   # spurious errors because dependent numpy depends_on gcc through :fortran
