@@ -20,6 +20,16 @@ class Scipy < Formula
 
   cxxstdlib_check :skip
 
+  resource "wheel" do
+    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.24.0.tar.gz"
+    sha1 "c02262299489646af253067e8136c060a93572e3"
+  end
+
+  resource "delocate" do
+    url "https://github.com/matthew-brett/delocate/archive/0.4.0.tar.gz"
+    sha1 "4a9e27c3863ad1452801e90a0f451b4a95eaa31e"
+  end
+
   def install
     config = <<-EOS.undent
       [DEFAULT]
@@ -71,6 +81,18 @@ class Scipy < Formula
     Language::Python.each_python(build) do |python, version|
       system python, "setup.py", "build", "--fcompiler=gnu95", "install", "--prefix=#{prefix}"
     end
+
+    mkdir_p libexec/"lib/python2.7/site-packages"
+    ENV["PYTHONPATH"] = libexec/"lib/python2.7/site-packages"
+    %w[wheel delocate].each do |r|
+      resource(r).stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+    end
+    delocate = <<-EOS.undent
+      from delocate import delocate_path
+      gcc_filter = lambda x: "/gcc/" in x
+      delocate_path("#{lib}", "#{libexec}/lib", copy_filt_func=gcc_filter)
+    EOS
+    system "python", "-c", delocate
   end
 
   test do
