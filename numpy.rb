@@ -13,9 +13,9 @@ end
 
 class Numpy < Formula
   homepage 'http://www.numpy.org'
-  url 'https://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
-  sha1 '8fe1d5f36bab3f1669520b4c7d8ab59a21a984da'
-  head 'https://github.com/numpy/numpy.git'
+  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.8.2/numpy-1.8.2.tar.gz"
+  sha1 "9f7b889465263be527f615e4adae11446c2e7806"
+  head "https://github.com/numpy/numpy.git"
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
