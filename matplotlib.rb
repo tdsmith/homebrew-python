@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class TexRequirement < Requirement
   fatal false
   env :userpaths
 
   def satisfied?
-    quiet_system('latex', '-version')  && quiet_system("dvipng", "-version")
+    quiet_system("latex", "-version")  && quiet_system("dvipng", "-version")
   end
 
   def message; <<-EOS.undent
@@ -26,7 +26,7 @@ class NoExternalPyCXXPackage < Requirement
     *** Warning, PyCXX detected! ***
     On your system, there is already a PyCXX version installed, that will
     probably make the build of Matplotlib fail. In python you can test if that
-    package is availbale with `import CXX`. To get a hint where that package
+    package is available with `import CXX`. To get a hint where that package
     is installed, you can:
         python -c "import os; import CXX; print(os.path.dirname(CXX.__file__))"
     See also: https://github.com/Homebrew/homebrew-python/issues/56
@@ -35,59 +35,66 @@ class NoExternalPyCXXPackage < Requirement
 end
 
 class Matplotlib < Formula
-  homepage 'http://matplotlib.org'
-  url 'https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.3.1/matplotlib-1.3.1.tar.gz'
-  sha1 '8578afc86424392591c0ee03f7613ffa9b6f68ee'
-  head 'https://github.com/matplotlib/matplotlib.git'
+  homepage "http://matplotlib.org"
+  url "https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.4.0/matplotlib-1.4.0.tar.gz"
+  sha1 "bdd84b713290207b108343c8af37ea25c8e2aadb"
+  head "https://github.com/matplotlib/matplotlib.git"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on :python => :recommended
   depends_on :python3 => :optional
   depends_on :freetype
   depends_on :libpng
   depends_on TexRequirement => :optional
   depends_on NoExternalPyCXXPackage
-  depends_on 'cairo' => :optional
-  depends_on 'ghostscript' => :optional
-  # On Xcode-only Macs, the Tk headers are not found by matplotlib
-  depends_on 'homebrew/dupes/tcl-tk' => :optional
-  cxxstdlib_check :skip
+  depends_on "cairo" => :optional
+  depends_on "ghostscript" => :optional
+  depends_on "homebrew/dupes/tcl-tk" => :optional
+
+  option "with-gtk3", "Build with gtk3 support"
+  requires_py3 = []
+  requires_py3 << "with-python3" if build.with? "python3"
+  if build.with? "gtk3"
+    depends_on "pygobject3" => requires_py3
+    depends_on "gtk+3"
+  end
+
+  if build.with? "python"
+    depends_on "pygtk" => :optional
+    depends_on "pygobject" if build.with? 'pygtk'
+    depends_on "gtk+" if build.with? 'pygtk'
+  end
 
   if build.with? "python3"
-    depends_on 'numpy' => 'with-python3'
-    depends_on 'pyside' => [:optional, 'with-python3']
-    depends_on 'pyqt' => [:optional, 'with-python3']
+    depends_on "numpy" => "with-python3"
+    depends_on "pyside" => [:optional, "with-python3"]
+    depends_on "pyqt" => [:optional, "with-python3"]
+    depends_on "pyqt5" => [:optional, "with-python3"]
+    depends_on "py3cairo" if build.with? "cairo"
   else
-    depends_on 'numpy'
-    depends_on 'pyside' => :optional
-    depends_on 'pyqt' => :optional
-    depends_on 'pygtk' => :optional
-    depends_on 'pygobject' if build.with? 'pygtk'
+    depends_on "numpy"
+    depends_on "pyside" => :optional
+    depends_on "pyqt" => :optional
+    depends_on "pyqt5" => [:optional, "with-python"]
   end
 
-  resource 'pyparsing' do
-    url 'https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.1.tar.gz'
-    sha1 'b645857008881d70599e89c66e4bbc596fe22043'
+  cxxstdlib_check :skip
+
+  resource "pyparsing" do
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.2.tar.gz"
+    sha1 "882b9ad439c600b0412ec0f1c806a5f3b9d4f4c7"
   end
 
-  resource 'python-dateutil' do
-    url 'https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz'
-    sha1 'fbafcd19ea0082b3ecb17695b4cb46070181699f'
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
+    sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
   end
 
   def package_installed? python, module_name
     quiet_system python, "-c", "import #{module_name}"
   end
 
-  def patches
-    p = []
-    # Fix for freetpe 2.5.1 (https://github.com/samueljohn/homebrew-python/issues/62)
-    p << 'https://github.com/matplotlib/matplotlib/pull/2623.diff' unless build.head?
-    return p
-  end
-
   def install
-    # Tell matplotlib, where brew is installed
     inreplace "setupext.py",
               "'darwin': ['/usr/local/', '/usr', '/usr/X11', '/opt/local'],",
               "'darwin': ['#{HOMEBREW_PREFIX}', '/usr', '/usr/X11', '/opt/local'],"
@@ -100,7 +107,6 @@ class Matplotlib < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-
       resource("pyparsing").stage do
         system python, "setup.py", "install", "--prefix=#{prefix}"
       end unless package_installed? python, "pyparsing"
