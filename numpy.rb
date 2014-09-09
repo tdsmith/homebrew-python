@@ -12,9 +12,9 @@ class NoUserConfig < Requirement
 end
 
 class Numpy < Formula
-  homepage 'http://www.numpy.org'
-  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.8.2/numpy-1.8.2.tar.gz"
-  sha1 "9f7b889465263be527f615e4adae11446c2e7806"
+  homepage "http://www.numpy.org"
+  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.0/numpy-1.9.0.tar.gz"
+  sha1 "bcff0097d78d749f99b8b76d4b61ee5a3fe4006c"
   head "https://github.com/numpy/numpy.git"
 
   depends_on :python => :recommended
@@ -25,9 +25,9 @@ class Numpy < Formula
   option 'with-openblas', "Use openBLAS instead of Apple's Accelerate Framework"
   depends_on "homebrew/science/openblas" => :optional
 
-  resource 'nose' do
-    url 'https://pypi.python.org/packages/source/n/nose/nose-1.3.1.tar.gz'
-    sha1 '19ba8f266a8ee4f128ef3eebf3c3e04e8ea7b998'
+  resource "nose" do
+    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.4.tar.gz"
+    sha1 "4d21578b480540e4e50ffae063094a14db2487d7"
   end
 
   def package_installed? python, module_name
@@ -60,7 +60,6 @@ class Numpy < Formula
       EOS
     end
 
-    rm_f 'site.cfg' if build.devel?
     Pathname('site.cfg').write config
 
     if HOMEBREW_CELLAR.subdirs.map{ |f| File.basename f }.include? 'gfortran'
