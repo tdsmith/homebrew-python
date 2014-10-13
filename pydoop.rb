@@ -30,6 +30,7 @@ class Pydoop < Formula
   depends_on JdkInstalled
   depends_on JavaHome
   depends_on 'boost'
+  depends_on 'boost-python'
   depends_on 'hadoop' unless(ENV["HADOOP_HOME"])
 
   def install
