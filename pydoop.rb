@@ -23,16 +23,16 @@ end
 
 class Pydoop < Formula
   homepage 'http://pydoop.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/pydoop/Pydoop-0.10/pydoop-0.10.0.tar.gz'
-  sha1 '8e2bc6d69a6bf64350ca52b3b86df3f194df8512'
+  url "https://github.com/crs4/pydoop/archive/0.12.0.tar.gz"
+  sha1 "78aad0d6dab093d9876dd835c5792ba4329e40b6"
 
   depends_on :python
   depends_on JdkInstalled
   depends_on JavaHome
-  depends_on 'boost'
-  depends_on 'boost-python'
-  depends_on 'hadoop' unless(ENV["HADOOP_HOME"])
-
+  depends_on "boost-python"
+  depends_on "hadoop" unless(ENV["HADOOP_HOME"])
+  depends_on "openssl"
+  
   def install
     unless(ENV["HADOOP_HOME"])
       ohai "HADOOP_HOME is not set. Using brewed version"
@@ -41,19 +41,13 @@ class Pydoop < Formula
     unless(ENV["BOOST_PYTHON"])
       ENV['BOOST_PYTHON'] = 'boost_python-mt'
     end
+    inreplace "setup.py", 'self.compiler.linker_so.append("-Wl,--no-as-needed")', ""
 
     system "python", 'setup.py', 'install', "--prefix=#{prefix}"
     prefix.install %w[test examples]
   end
 
-  def caveats;
-    s = <<-EOS.undent
-    If you use the Homebrew version of Python, you might get a
-    "PyThreadState_Get: no current thread" error. In this case, try
-    reinstalling boost with the --build-from-source option. For
-    details, see:
-    https://github.com/mxcl/homebrew/wiki/Common-Issues
-    EOS
+  test do
+    system "python", "-c", "import pydoop"
   end
-
 end
