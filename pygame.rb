@@ -56,7 +56,7 @@ class Pygame < Formula
 
     # Manually append what is the default for PyGame on the Mac
     system "cat Setup_Darwin.in >> Setup"
-    
+
     ENV.prepend_create_path "PYTHONPATH", lib+"python2.7/site-packages"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
   end

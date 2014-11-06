@@ -32,7 +32,7 @@ class Pydoop < Formula
   depends_on "boost-python"
   depends_on "hadoop" unless(ENV["HADOOP_HOME"])
   depends_on "openssl"
-  
+
   def install
     unless(ENV["HADOOP_HOME"])
       ohai "HADOOP_HOME is not set. Using brewed version"
