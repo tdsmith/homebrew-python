@@ -36,8 +36,8 @@ end
 
 class Matplotlib < Formula
   homepage "http://matplotlib.org"
-  url "https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.4.0/matplotlib-1.4.0.tar.gz"
-  sha1 "bdd84b713290207b108343c8af37ea25c8e2aadb"
+  url "https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.4.2/matplotlib-1.4.2.tar.gz"
+  sha1 "242c57ddae808b1869cad4b08bb0973c513e12f8"
   head "https://github.com/matplotlib/matplotlib.git"
 
   depends_on "pkg-config" => :build
@@ -80,14 +80,29 @@ class Matplotlib < Formula
 
   cxxstdlib_check :skip
 
-  resource "pyparsing" do
-    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.2.tar.gz"
-    sha1 "882b9ad439c600b0412ec0f1c806a5f3b9d4f4c7"
-  end
-
-  resource "python-dateutil" do
+  resource "dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
     sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
+  end
+
+  resource "mock" do
+    url "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz"
+    sha1 "ba2b1d5f84448497e14e25922c5e3293f0a91c7e"
+  end
+
+  resource "nose" do
+    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.4.tar.gz"
+    sha1 "4d21578b480540e4e50ffae063094a14db2487d7"
+  end
+
+  resource "pyparsing" do
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.3.tar.gz"
+    sha1 "39299b6bb894a27fb9cd5b548c21d168b893b434"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
+    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
   end
 
   def package_installed? python, module_name
@@ -96,8 +111,8 @@ class Matplotlib < Formula
 
   def install
     inreplace "setupext.py",
-              "'darwin': ['/usr/local/', '/usr', '/usr/X11', '/opt/local'],",
-              "'darwin': ['#{HOMEBREW_PREFIX}', '/usr', '/usr/X11', '/opt/local'],"
+              "'darwin': ['/usr/local/'",
+              "'darwin': ['#{HOMEBREW_PREFIX}'"
 
     # Apple has the Frameworks (esp. Tk.Framework) in a different place
     unless MacOS::CLT.installed?
@@ -106,33 +121,42 @@ class Matplotlib < Formula
                 "'#{MacOS.sdk_path}/System/Library/Frameworks',"
     end
 
+    old_pythonpath = ENV["PYTHONPATH"]
     Language::Python.each_python(build) do |python, version|
-      resource("pyparsing").stage do
-        system python, "setup.py", "install", "--prefix=#{prefix}"
-      end unless package_installed? python, "pyparsing"
+      ENV["PYTHONPATH"] = old_pythonpath
 
-      resource("python-dateutil").stage do
-        system python, "setup.py", "install",  "--prefix=#{prefix}",
-                       "--single-version-externally-managed",
-                       "--record=installed.txt"
-      end unless package_installed? python, "dateutil"
+      resources.each do |r|
+        r.stage do
+          Language::Python.setup_install python, libexec
+        end unless package_installed? python, r.name
+      end
 
-      system python, "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
+      bundle_path = libexec/"lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", bundle_path
+      dest_path = lib/"python#{version}/site-packages"
+      mkdir_p dest_path
+      (dest_path/"homebrew-matplotlib-bundle.pth").atomic_write(bundle_path.to_s + "\n")
+
+      # ensure Homebrew numpy is found
+      ENV.prepend_path "PYTHONPATH", Language::Python.homebrew_site_packages(version)
+      Language::Python.setup_install python, prefix
     end
   end
 
   def caveats
     s = <<-EOS.undent
-      If you want to use the `wxagg` backend, do `brew install wxwidgets`.
+      If you want to use the `wxagg` backend, do `brew install wxpython`.
       This can be done even after the matplotlib install.
     EOS
-    if build.with? "python" and not Formula['python'].installed?
+    if build.with? "python" and not Formula["python"].installed?
+      homebrew_site_packages = Language::Python.homebrew_site_packages
+      user_site_packages = Language::Python.user_site_packages "python"
       s += <<-EOS.undent
         If you use system python (that comes - depending on the OS X version -
-        with older versions of numpy, scipy and matplotlib), you actually may
-        have to set the `PYTHONPATH` in order to make the brewed packages come
-        before these shipped packages in Python's `sys.path`.
-            export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python2.7/site-packages
+        with older versions of numpy, scipy and matplotlib), you may need to
+        ensure that the brewed packages come earlier in Python's sys.path with:
+          mkdir -p #{user_site_packages}
+          echo 'import sys; sys.path.insert(1, "#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
       EOS
     end
     s
