@@ -13,8 +13,8 @@ end
 
 class Numpy < Formula
   homepage "http://www.numpy.org"
-  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.0/numpy-1.9.0.tar.gz"
-  sha1 "bcff0097d78d749f99b8b76d4b61ee5a3fe4006c"
+  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.1/numpy-1.9.1.tar.gz"
+  sha256 "0075bbe07e30b659ae4415446f45812dc1b96121a493a4a1f8b1ba77b75b1e1c"
   head "https://github.com/numpy/numpy.git"
 
   depends_on :python => :recommended
@@ -62,7 +62,7 @@ class Numpy < Formula
 
     Pathname('site.cfg').write config
 
-    if HOMEBREW_CELLAR.subdirs.map{ |f| File.basename f }.include? 'gfortran'
+    if (HOMEBREW_CELLAR/"gfortran").directory?
         opoo <<-EOS.undent
             It looks like the deprecated gfortran formula is installed.
             This causes build problems with numpy. gfortran is now provided by
@@ -75,13 +75,14 @@ class Numpy < Formula
 
     Language::Python.each_python(build) do |python, version|
       resource("nose").stage do
-        system python, "setup.py", "install", "--prefix=#{prefix}",
-                       "--single-version-externally-managed",
-                       "--record=installed.txt"
-        mv prefix/"man", share  # Brew puts "man" into "share".
+        Language::Python.setup_install python, libexec/"nose"
+        nose_path = libexec/"nose/lib/python#{version}/site-packages"
+        dest_path = lib/"python#{version}/site-packages"
+        mkdir_p dest_path
+        (dest_path/"homebrew-numpy-nose.pth").atomic_write(nose_path.to_s + "\n")
       end unless package_installed? python, "nose"
-      system python, "setup.py", "build", "--fcompiler=gnu95", "install",
-                                          "--prefix=#{prefix}"
+      system python, "setup.py", "build", "--fcompiler=gnu95",
+                     "install", "--prefix=#{prefix}"
     end
   end
 
@@ -92,13 +93,15 @@ class Numpy < Formula
   end
 
   def caveats
-    if build.with? "python" and not Formula['python'].installed?
+    if build.with? "python" and not Formula["python"].installed?
+      homebrew_site_packages = Language::Python.homebrew_site_packages
+      user_site_packages = Language::Python.user_site_packages "python"
       <<-EOS.undent
         If you use system python (that comes - depending on the OS X version -
-        with older versions of numpy, scipy and matplotlib), you actually may
-        have to set the `PYTHONPATH` in order to make the brewed packages come
-        before these shipped packages in Python's `sys.path`.
-            export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python2.7/site-packages
+        with older versions of numpy, scipy and matplotlib), you may need to
+        ensure that the brewed packages come earlier in Python's sys.path with:
+          mkdir -p #{user_site_packages}
+          echo 'import sys; sys.path.insert(1, "#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
       EOS
     end
   end
