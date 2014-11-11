@@ -2,8 +2,8 @@ require "formula"
 
 class Pillow < Formula
   homepage "https://github.com/python-imaging/Pillow"
-  url "https://github.com/python-pillow/Pillow/archive/2.6.0.tar.gz"
-  sha1 "c309e4bd226c14f0e93e42a743fd8e0a822fd6fe"
+  url "https://github.com/python-pillow/Pillow/archive/2.6.1.tar.gz"
+  sha1 "c86d2346b99e51e39543704905ea2f4cb9f0dea1"
   head "https://github.com/python-imaging/Pillow.git"
 
   # waiting on upstream resolution of JPEG2000 issues
@@ -43,15 +43,17 @@ class Pillow < Formula
     Language::Python.each_python(build) do |python, version|
       unless package_installed?(python, "nose")
         resource("nose").stage do
-          system python, "setup.py", "install", "--prefix=#{prefix}",
-                         "--single-version-externally-managed",
-                         "--record=installed.txt"
-          mv prefix/"man", share
+          Language::Python.setup_install python, libexec
+          nose_path = libexec/"lib/python#{version}/site-packages"
+          dest_path = lib/"python#{version}/site-packages"
+          mkdir_p dest_path
+          (dest_path/"homebrew-pillow-nose.pth").atomic_write(nose_path.to_s + "\n")
+          ENV.append_path "PYTHONPATH", nose_path
         end
       end
       # don't accidentally discover openjpeg since it isn't working
       system python, "setup.py", "build_ext", "--disable-jpeg2000" # if build.without? "openjpeg"
-      system python, "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
+      Language::Python.setup_install python, prefix
     end
 
     prefix.install "Tests"
