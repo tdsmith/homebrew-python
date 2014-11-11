@@ -75,7 +75,7 @@ class Scipy < Formula
 
   test do
     Language::Python.each_python(build) do |python, version|
-      system python, "-c", "import scipy; scipy.test()"
+      system python, "-c", "import scipy; assert not scipy.test().failures"
     end
   end
 
