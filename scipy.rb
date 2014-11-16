@@ -56,7 +56,7 @@ class Scipy < Formula
 
     Pathname('site.cfg').write config
 
-    if HOMEBREW_CELLAR.subdirs.map{ |f| File.basename f }.include? 'gfortran'
+    if (HOMEBREW_CELLAR/"gfortran").directory?
         opoo <<-EOS.undent
             It looks like the deprecated gfortran formula is installed.
             This causes build problems with scipy. gfortran is now provided by
@@ -80,13 +80,15 @@ class Scipy < Formula
   end
 
   def caveats
-    if build.with? "python" and not Formula['python'].installed?
+    if build.with? "python" and not Formula["python"].installed?
+      homebrew_site_packages = Language::Python.homebrew_site_packages
+      user_site_packages = Language::Python.user_site_packages "python"
       <<-EOS.undent
         If you use system python (that comes - depending on the OS X version -
-        with older versions of numpy, scipy and matplotlib), you actually may
-        have to set the `PYTHONPATH` in order to make the brewed packages come
-        before these shipped packages in Python's `sys.path`.
-            export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python2.7/site-packages
+        with older versions of numpy, scipy and matplotlib), you may need to
+        ensure that the brewed packages come earlier in Python's sys.path with:
+          mkdir -p #{user_site_packages}
+          echo 'import sys; sys.path.insert(1, "#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
       EOS
     end
   end
