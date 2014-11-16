@@ -20,6 +20,13 @@ class Scipy < Formula
 
   cxxstdlib_check :skip
 
+  # allow tests to pass on numpy 1.9.1
+  # https://github.com/Homebrew/homebrew-python/issues/178
+  patch do
+    url "https://github.com/scipy/scipy/commit/8b0575.diff"
+    sha1 "b8de832ef4b11cd346c54aabbd68ce5923da64d5"
+  end
+
   def install
     config = <<-EOS.undent
       [DEFAULT]
