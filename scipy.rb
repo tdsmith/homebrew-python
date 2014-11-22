@@ -5,6 +5,7 @@ class Scipy < Formula
   url 'https://downloads.sourceforge.net/project/scipy/scipy/0.14.0/scipy-0.14.0.tar.gz'
   sha1 'faf16ddf307eb45ead62a92ffadc5288a710feb8'
   head 'https://github.com/scipy/scipy.git'
+  revision 1
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
