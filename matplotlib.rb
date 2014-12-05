@@ -43,8 +43,8 @@ class Matplotlib < Formula
   depends_on "pkg-config" => :build
   depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on :freetype
-  depends_on :libpng
+  depends_on "freetype"
+  depends_on "libpng"
   depends_on TexRequirement => :optional
   depends_on NoExternalPyCXXPackage
   depends_on "cairo" => :optional
