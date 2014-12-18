@@ -77,7 +77,9 @@ class Scipy < Formula
 
     # gfortran is gnu95
     Language::Python.each_python(build) do |python, version|
-      system python, "setup.py", "build", "--fcompiler=gnu95", "install", "--prefix=#{prefix}"
+      ENV.prepend_create_path "PYTHONPATH", lib/"python#{version}/site-packages"
+      system python, "setup.py", "build", "--fcompiler=gnu95"
+      system python, *Language::Python.setup_install_args(prefix)
     end
   end
 
