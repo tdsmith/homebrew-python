@@ -43,7 +43,7 @@ class Pillow < Formula
     Language::Python.each_python(build) do |python, version|
       unless package_installed?(python, "nose")
         resource("nose").stage do
-          Language::Python.setup_install python, libexec
+          system python, *Language::Python.setup_install_args(libexec)
           nose_path = libexec/"lib/python#{version}/site-packages"
           dest_path = lib/"python#{version}/site-packages"
           mkdir_p dest_path
@@ -53,7 +53,7 @@ class Pillow < Formula
       end
       # don't accidentally discover openjpeg since it isn't working
       system python, "setup.py", "build_ext", "--disable-jpeg2000" # if build.without? "openjpeg"
-      Language::Python.setup_install python, prefix
+      system python, *Language::Python.setup_install_args(prefix)
     end
 
     prefix.install "Tests"
