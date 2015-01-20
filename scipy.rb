@@ -2,10 +2,9 @@ require 'formula'
 
 class Scipy < Formula
   homepage 'http://www.scipy.org'
-  url 'https://downloads.sourceforge.net/project/scipy/scipy/0.14.0/scipy-0.14.0.tar.gz'
-  sha1 'faf16ddf307eb45ead62a92ffadc5288a710feb8'
+  url 'https://downloads.sourceforge.net/project/scipy/scipy/0.15.1/scipy-0.15.1.tar.gz'
+  sha1 '7ef714ffe95230cd2ce78c51af18983bbe762f2e'
   head 'https://github.com/scipy/scipy.git'
-  revision 1
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -20,13 +19,6 @@ class Scipy < Formula
   depends_on "numpy" => numpy_options
 
   cxxstdlib_check :skip
-
-  # allow tests to pass on numpy 1.9.1
-  # https://github.com/Homebrew/homebrew-python/issues/178
-  patch do
-    url "https://github.com/scipy/scipy/commit/8b0575.diff"
-    sha1 "b8de832ef4b11cd346c54aabbd68ce5923da64d5"
-  end
 
   def install
     config = <<-EOS.undent
