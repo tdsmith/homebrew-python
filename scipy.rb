@@ -75,6 +75,14 @@ class Scipy < Formula
     end
   end
 
+  # cleanup leftover .pyc files from previous installs which can cause problems
+  # see https://github.com/Homebrew/homebrew-python/issues/185#issuecomment-67534979
+  def post_install
+    Language::Python.each_python(build) do |python, version|
+      rm_f Dir["#{HOMEBREW_PREFIX}/lib/python#{version}/site-packages/scipy/**/*.pyc"]
+    end
+  end
+
   test do
     Language::Python.each_python(build) do |python, version|
       system python, "-c", "import scipy; assert not scipy.test().failures"
