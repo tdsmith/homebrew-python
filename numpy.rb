@@ -1,16 +1,3 @@
-require 'formula'
-
-class NoUserConfig < Requirement
-  def satisfied?
-    not File.exist? "#{ENV['HOME']}/.numpy-site.cfg"
-  end
-
-  def message; <<-EOS.undent
-      A ~/.numpy-site.cfg has been detected, which may interfere with brew's build.
-    EOS
-  end
-end
-
 class Numpy < Formula
   homepage "http://www.numpy.org"
   url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.1/numpy-1.9.1.tar.gz"
@@ -20,9 +7,8 @@ class Numpy < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
   depends_on :fortran
-  depends_on NoUserConfig
 
-  option 'with-openblas', "Use openBLAS instead of Apple's Accelerate Framework"
+  option "with-openblas", "Use openBLAS instead of Apple's Accelerate Framework"
   depends_on "homebrew/science/openblas" => :optional
 
   resource "nose" do
@@ -30,11 +16,12 @@ class Numpy < Formula
     sha1 "4d21578b480540e4e50ffae063094a14db2487d7"
   end
 
-  def package_installed? python, module_name
+  def package_installed?(python, module_name)
     quiet_system python, "-c", "import #{module_name}"
   end
 
   def install
+    ENV["HOME"] = buildpath
     # Numpy is configured via a site.cfg and we want to use some libs
     # For maintainers:
     # Check which BLAS/LAPACK numpy actually uses via:
@@ -45,12 +32,12 @@ class Numpy < Formula
       include_dirs = #{HOMEBREW_PREFIX}/include
     EOS
 
-    if build.with? 'openblas'
+    if build.with? "openblas"
       openblas_dir = Formula["openblas"].opt_prefix
       # Setting ATLAS to None is important to prevent numpy from always
       # linking against Accelerate.framework.
-      ENV['ATLAS'] = "None"
-      ENV['BLAS'] = ENV['LAPACK'] = "#{openblas_dir}/lib/libopenblas.dylib"
+      ENV["ATLAS"] = "None"
+      ENV["BLAS"] = ENV["LAPACK"] = "#{openblas_dir}/lib/libopenblas.dylib"
 
       config << <<-EOS.undent
         [openblas]
@@ -60,17 +47,17 @@ class Numpy < Formula
       EOS
     end
 
-    Pathname('site.cfg').write config
+    (buildpath/"site.cfg").write config
 
     if (HOMEBREW_CELLAR/"gfortran").directory?
-        opoo <<-EOS.undent
-            It looks like the deprecated gfortran formula is installed.
-            This causes build problems with numpy. gfortran is now provided by
-            the gcc formula. Please run:
-                brew rm gfortran
-                brew install gcc
-            if you encounter problems.
-        EOS
+      opoo <<-EOS.undent
+        It looks like the deprecated gfortran formula is installed.
+        This causes build problems with numpy. gfortran is now provided by
+        the gcc formula. Please run:
+            brew rm gfortran
+            brew install gcc
+        if you encounter problems.
+      EOS
     end
 
     Language::Python.each_python(build) do |python, version|
@@ -87,13 +74,13 @@ class Numpy < Formula
   end
 
   test do
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system python, "-c", "import numpy; numpy.test()"
     end
   end
 
   def caveats
-    if build.with? "python" and not Formula["python"].installed?
+    if build.with? "python" && !Formula["python"].installed?
       homebrew_site_packages = Language::Python.homebrew_site_packages
       user_site_packages = Language::Python.user_site_packages "python"
       <<-EOS.undent
@@ -105,5 +92,4 @@ class Numpy < Formula
       EOS
     end
   end
-
 end
