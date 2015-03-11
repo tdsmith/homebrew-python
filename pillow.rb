@@ -19,6 +19,10 @@ class Pillow < Formula
   depends_on "webp" => :recommended
   # depends_on "homebrew/versions/openjpeg21" if build.with? "openjpeg"
 
+  # Don't automatically detect Tcl or Tk in /Library
+  # Fixes https://github.com/Homebrew/homebrew-python/issues/190
+  patch :DATA
+
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.3.tar.gz"
     sha1 "cad94d4c58ce82d35355497a1c869922a603a9a5"
@@ -66,3 +70,16 @@ class Pillow < Formula
     end
   end
 end
+__END__
+diff --git a/setup.py b/setup.py
+index 90687d5..f11fb3a 100644
+--- a/setup.py
++++ b/setup.py
+@@ -579,7 +579,6 @@ class pil_build_ext(build_ext):
+             # locate Tcl/Tk frameworks
+             frameworks = []
+             framework_roots = [
+-                "/Library/Frameworks",
+                 "/System/Library/Frameworks"]
+             for root in framework_roots:
+                 if (
