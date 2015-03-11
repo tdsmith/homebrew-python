@@ -1,7 +1,7 @@
 class Numpy < Formula
   homepage "http://www.numpy.org"
-  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.1/numpy-1.9.1.tar.gz"
-  sha256 "0075bbe07e30b659ae4415446f45812dc1b96121a493a4a1f8b1ba77b75b1e1c"
+  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.2/numpy-1.9.2.tar.gz"
+  sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
   head "https://github.com/numpy/numpy.git"
 
   depends_on :python => :recommended
@@ -13,7 +13,7 @@ class Numpy < Formula
 
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.4.tar.gz"
-    sha1 "4d21578b480540e4e50ffae063094a14db2487d7"
+    sha256 "76bc63a4e2d5e5a0df77ca7d18f0f56e2c46cfb62b71103ba92a92c79fab1e03"
   end
 
   def install
