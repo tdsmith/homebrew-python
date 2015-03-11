@@ -22,15 +22,6 @@ class Numpy < Formula
 
   def install
     ENV["HOME"] = buildpath
-    # Numpy is configured via a site.cfg and we want to use some libs
-    # For maintainers:
-    # Check which BLAS/LAPACK numpy actually uses via:
-    # xcrun otool -L $(brew --cellar)/numpy/1.8.1/lib/python2.7/site-packages/numpy/linalg/lapack_lite.so
-    config = <<-EOS.undent
-      [DEFAULT]
-      library_dirs = #{HOMEBREW_PREFIX}/lib
-      include_dirs = #{HOMEBREW_PREFIX}/include
-    EOS
 
     if build.with? "openblas"
       openblas_dir = Formula["openblas"].opt_prefix
@@ -39,15 +30,14 @@ class Numpy < Formula
       ENV["ATLAS"] = "None"
       ENV["BLAS"] = ENV["LAPACK"] = "#{openblas_dir}/lib/libopenblas.dylib"
 
-      config << <<-EOS.undent
+      config = <<-EOS.undent
         [openblas]
         libraries = openblas
         library_dirs = #{openblas_dir}/lib
         include_dirs = #{openblas_dir}/include
       EOS
+      (buildpath/"site.cfg").write config
     end
-
-    (buildpath/"site.cfg").write config
 
     if (HOMEBREW_CELLAR/"gfortran").directory?
       opoo <<-EOS.undent
