@@ -36,8 +36,8 @@ end
 
 class Matplotlib < Formula
   homepage "http://matplotlib.org"
-  url "https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.4.2/matplotlib-1.4.2.tar.gz"
-  sha1 "242c57ddae808b1869cad4b08bb0973c513e12f8"
+  url "https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.4.3/matplotlib-1.4.3.tar.gz"
+  sha1 "d61a9e3231d8605e8b4fd5aa4fe8d92c5a180984"
   head "https://github.com/matplotlib/matplotlib.git"
 
   depends_on "pkg-config" => :build
