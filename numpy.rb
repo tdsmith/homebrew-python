@@ -16,10 +16,6 @@ class Numpy < Formula
     sha1 "4d21578b480540e4e50ffae063094a14db2487d7"
   end
 
-  def package_installed?(python, module_name)
-    quiet_system python, "-c", "import #{module_name}"
-  end
-
   def install
     ENV["HOME"] = buildpath
 
@@ -52,12 +48,12 @@ class Numpy < Formula
 
     Language::Python.each_python(build) do |python, version|
       resource("nose").stage do
-        Language::Python.setup_install python, libexec/"nose"
+        system python, *Language::Python.setup_install_args(libexec/"nose")
         nose_path = libexec/"nose/lib/python#{version}/site-packages"
         dest_path = lib/"python#{version}/site-packages"
         mkdir_p dest_path
-        (dest_path/"homebrew-numpy-nose.pth").atomic_write(nose_path.to_s + "\n")
-      end unless package_installed? python, "nose"
+        (dest_path/"homebrew-numpy-nose.pth").write "#{nose_path}\n"
+      end
       system python, "setup.py", "build", "--fcompiler=gnu95",
                      "install", "--prefix=#{prefix}"
     end
