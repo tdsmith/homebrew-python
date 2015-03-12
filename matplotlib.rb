@@ -103,10 +103,6 @@ class Matplotlib < Formula
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
-  def package_installed? python, module_name
-    quiet_system python, "-c", "import #{module_name}"
-  end
-
   def install
     inreplace "setupext.py",
               "'darwin': ['/usr/local/'",
@@ -119,25 +115,20 @@ class Matplotlib < Formula
                 "'#{MacOS.sdk_path}/System/Library/Frameworks',"
     end
 
-    old_pythonpath = ENV["PYTHONPATH"]
     Language::Python.each_python(build) do |python, version|
-      ENV["PYTHONPATH"] = old_pythonpath
-
+      bundle_path = libexec/"lib/python#{version}/site-packages"
+      bundle_path.mkpath
+      ENV.append_path "PYTHONPATH", bundle_path
       resources.each do |r|
         r.stage do
-          Language::Python.setup_install python, libexec
-        end unless package_installed? python, r.name
+          system python, *Language::Python.setup_install_args(libexec)
+        end
       end
-
-      bundle_path = libexec/"lib/python#{version}/site-packages"
-      ENV.append_path "PYTHONPATH", bundle_path
       dest_path = lib/"python#{version}/site-packages"
-      mkdir_p dest_path
-      (dest_path/"homebrew-matplotlib-bundle.pth").atomic_write(bundle_path.to_s + "\n")
+      dest_path.mkpath
+      (dest_path/"homebrew-matplotlib-bundle.pth").write "#{bundle_path}\n"
 
-      # ensure Homebrew numpy is found
-      ENV.prepend_path "PYTHONPATH", Language::Python.homebrew_site_packages(version)
-      Language::Python.setup_install python, prefix
+      system python, *Language::Python.setup_install_args(prefix)
     end
   end
 
