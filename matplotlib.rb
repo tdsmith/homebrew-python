@@ -1,5 +1,3 @@
-require "formula"
-
 class TexRequirement < Requirement
   fatal false
   env :userpaths
@@ -36,8 +34,8 @@ end
 
 class Matplotlib < Formula
   homepage "http://matplotlib.org"
-  url "https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.4.3/matplotlib-1.4.3.tar.gz"
-  sha1 "d61a9e3231d8605e8b4fd5aa4fe8d92c5a180984"
+  url "https://pypi.python.org/packages/source/m/matplotlib/matplotlib-1.4.3.tar.gz"
+  sha256 "61f201c6a82e89e4d9e324266203fad44f95fd8f36d8eec0d8690273e1182f75"
   head "https://github.com/matplotlib/matplotlib.git"
 
   depends_on "pkg-config" => :build
