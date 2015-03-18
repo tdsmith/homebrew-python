@@ -30,11 +30,6 @@ class Scapy < Formula
   end
 
   test do
-    user_site = Language::Python.user_site_packages "python"
-    homebrew_site = Language::Python.homebrew_site_packages
-    user_site.mkpath
-    (user_site/"homebrew-test.pth").write "import site; site.addsitedir('#{homebrew_site}')\n"
-
     command = "rdpcap('#{test_fixtures("test.pcap")}')"
     assert_match /TCP/, pipe_output(bin/"scapy", command)
   end
