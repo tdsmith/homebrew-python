@@ -4,7 +4,7 @@ class Scapy < Formula
   sha256 "8972c02e39a826a10c02c2bdd5025f7251dce9589c57befd9bb55c65f02e4934"
   head "https://bitbucket.org/secdev/scapy", :using => :hg
 
-  depends_on :python if MacOS.version <= :snow_leopard
+  depends_on :python
   depends_on "libdnet"
 
   resource "pylibpcap" do
