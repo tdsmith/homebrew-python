@@ -2,6 +2,13 @@ class Scapy < Formula
   homepage 'http://www.secdev.org/projects/scapy/'
   url "https://bitbucket.org/secdev/scapy/downloads/scapy-2.3.1.zip"
   sha256 "8972c02e39a826a10c02c2bdd5025f7251dce9589c57befd9bb55c65f02e4934"
+  bottle do
+    root_url "https://homebrew.bintray.com/bottles-python"
+    sha256 "146b3ffc158d67efb7435a1b4ae0c9baae058f35bc482d13f8b233fe013c7d30" => :yosemite
+    sha256 "511e4995ab5894ba66e98763f0e10abe5fc14adb8520a17629e42da7a63eec3d" => :mavericks
+    sha256 "09fa71ed1604f01278eaae5f81673e78ee95021c401404a61c64048523a63c41" => :mountain_lion
+  end
+
   head "https://bitbucket.org/secdev/scapy", :using => :hg
 
   depends_on :python if MacOS.version <= :snow_leopard
