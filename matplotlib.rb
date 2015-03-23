@@ -1,15 +1,15 @@
-class TexRequirement < Requirement
+class DvipngRequirement < Requirement
   fatal false
-  env :userpaths
+  cask "matctex"
 
-  def satisfied?
-    quiet_system("latex", "-version")  && quiet_system("dvipng", "-version")
-  end
+  satisfy { which("dvipng") }
 
-  def message; <<-EOS.undent
-    LaTeX not found. This is optional for Matplotlib.
-    If you want, https://www.tug.org/mactex/ provides an installer.
+  def message
+    s = <<-EOS.undent
+      `dvipng` not found. This is optional for Matplotlib.
     EOS
+    s += super
+    s
   end
 end
 
@@ -17,7 +17,7 @@ class NoExternalPyCXXPackage < Requirement
   fatal false
 
   satisfy do
-    not quiet_system "python", "-c", "import CXX"
+    !quiet_system "python", "-c", "import CXX"
   end
 
   def message; <<-EOS.undent
@@ -43,7 +43,8 @@ class Matplotlib < Formula
   depends_on :python3 => :optional
   depends_on "freetype"
   depends_on "libpng"
-  depends_on TexRequirement => :optional
+  depends_on :tex => :optional
+  depends_on DvipngRequirement if build.with? "tex"
   depends_on NoExternalPyCXXPackage
   depends_on "cairo" => :optional
   depends_on "ghostscript" => :optional
@@ -59,8 +60,8 @@ class Matplotlib < Formula
 
   if build.with? "python"
     depends_on "pygtk" => :optional
-    depends_on "pygobject" if build.with? 'pygtk'
-    depends_on "gtk+" if build.with? 'pygtk'
+    depends_on "pygobject" if build.with? "pygtk"
+    depends_on "gtk+" if build.with? "pygtk"
   end
 
   if build.with? "python3"
@@ -137,7 +138,7 @@ class Matplotlib < Formula
       If you want to use the `wxagg` backend, do `brew install wxpython`.
       This can be done even after the matplotlib install.
     EOS
-    if build.with? "python" and not Formula["python"].installed?
+    if build.with?("python") && !Formula["python"].installed?
       homebrew_site_packages = Language::Python.homebrew_site_packages
       user_site_packages = Language::Python.user_site_packages "python"
       s += <<-EOS.undent
@@ -153,7 +154,7 @@ class Matplotlib < Formula
 
   test do
     ohai "This test takes quite a while. Use --verbose to see progress."
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system python, "-c", "import matplotlib as m; m.test()"
     end
   end
