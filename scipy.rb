@@ -1,15 +1,15 @@
-require 'formula'
-
 class Scipy < Formula
   homepage 'http://www.scipy.org'
   url 'https://downloads.sourceforge.net/project/scipy/scipy/0.15.1/scipy-0.15.1.tar.gz'
   sha1 '7ef714ffe95230cd2ce78c51af18983bbe762f2e'
   head 'https://github.com/scipy/scipy.git'
 
-  depends_on :python => :recommended
-  depends_on :python3 => :optional
+  option "without-python", "Build without python2 support"
+
   depends_on 'swig' => :build
+  depends_on :python3 => :optional
   depends_on :fortran
+
   option 'with-openblas', "Use openBLAS instead of Apple's Accelerate Framework"
   depends_on 'homebrew/science/openblas' => :optional
 
@@ -55,17 +55,6 @@ class Scipy < Formula
     end
 
     Pathname('site.cfg').write config
-
-    if (HOMEBREW_CELLAR/"gfortran").directory?
-        opoo <<-EOS.undent
-            It looks like the deprecated gfortran formula is installed.
-            This causes build problems with scipy. gfortran is now provided by
-            the gcc formula. Please run:
-                brew rm gfortran
-                brew install gcc
-            if you encounter problems.
-        EOS
-    end
 
     # gfortran is gnu95
     Language::Python.each_python(build) do |python, version|
