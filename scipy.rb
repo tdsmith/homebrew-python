@@ -4,6 +4,14 @@ class Scipy < Formula
   sha1 '7ef714ffe95230cd2ce78c51af18983bbe762f2e'
   head 'https://github.com/scipy/scipy.git'
 
+  bottle do
+    root_url "https://homebrew.bintray.com/bottles-python"
+    cellar :any
+    sha256 "6dcdd9ef6be2bf5edac5127e6eb1c6c4dc940051b20cbb7d85ba75ef1a45f3f2" => :yosemite
+    sha256 "f8b9007e8c165f30cc85d7c4a15bd323f0df8fcabfdc42715fda9de53deb65f6" => :mavericks
+    sha256 "c90277dbcd72c62f4b74796e0a48779d91972db14feb3d2252ff22a17a473af5" => :mountain_lion
+  end
+
   option "without-python", "Build without python2 support"
 
   depends_on 'swig' => :build
