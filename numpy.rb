@@ -4,7 +4,8 @@ class Numpy < Formula
   sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
   head "https://github.com/numpy/numpy.git"
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python2 support"
+
   depends_on :python3 => :optional
   depends_on :fortran
 
@@ -33,17 +34,6 @@ class Numpy < Formula
         include_dirs = #{openblas_dir}/include
       EOS
       (buildpath/"site.cfg").write config
-    end
-
-    if (HOMEBREW_CELLAR/"gfortran").directory?
-      opoo <<-EOS.undent
-        It looks like the deprecated gfortran formula is installed.
-        This causes build problems with numpy. gfortran is now provided by
-        the gcc formula. Please run:
-            brew rm gfortran
-            brew install gcc
-        if you encounter problems.
-      EOS
     end
 
     Language::Python.each_python(build) do |python, version|
