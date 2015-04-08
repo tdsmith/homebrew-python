@@ -4,6 +4,13 @@ class Numpy < Formula
   sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
   head "https://github.com/numpy/numpy.git"
 
+  bottle do
+    root_url "https://homebrew.bintray.com/bottles-python"
+    sha256 "cbdc02a3509d2a77f6fa0b4cef32fb6c2415145804f3ad46b42c217c0bdd8729" => :yosemite
+    sha256 "2ad57a2b046cb4d0c0e14db01f1ea7b808636916d32d12cdb074cc949bce1f8a" => :mavericks
+    sha256 "0d9f802175c508484e2c8b34a6360280b9c923cfcc9bc61bbab70c49a2f60c88" => :mountain_lion
+  end
+
   option "without-python", "Build without python2 support"
 
   depends_on :python3 => :optional
