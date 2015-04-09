@@ -27,6 +27,10 @@ class Numpy < Formula
   def install
     ENV["HOME"] = buildpath
 
+    # https://github.com/numpy/numpy/issues/4203
+    # https://github.com/Homebrew/homebrew-python/issues/209
+    ENV.append "LDFLAGS", "-shared" if OS.linux?
+
     if build.with? "openblas"
       openblas_dir = Formula["openblas"].opt_prefix
       # Setting ATLAS to None is important to prevent numpy from always
