@@ -38,44 +38,44 @@ class Matplotlib < Formula
   sha256 "61f201c6a82e89e4d9e324266203fad44f95fd8f36d8eec0d8690273e1182f75"
   head "https://github.com/matplotlib/matplotlib.git"
 
-  depends_on "pkg-config" => :build
-  depends_on :python => :recommended
+  option "without-python", "Build without python2 support"
   depends_on :python3 => :optional
+
+  requires_py2 = []
+  requires_py2 << "with-python" if build.with? "python"
+  requires_py3 = []
+  requires_py3 << "with-python3" if build.with? "python3"
+
+  option "with-cairo", "Build with cairo backend support"
+  option "with-pygtk", "Build with pygtk backend support (python2 only)"
+  deprecated_option "with-gtk3" => "with-gtk+3"
+
+  depends_on NoExternalPyCXXPackage => :build
+  depends_on "pkg-config" => :build
+
   depends_on "freetype"
   depends_on "libpng"
-  depends_on :tex => :optional
-  depends_on DvipngRequirement if build.with? "tex"
-  depends_on NoExternalPyCXXPackage
-  depends_on "cairo" => :optional
+  depends_on "numpy" => requires_py3
   depends_on "ghostscript" => :optional
   depends_on "homebrew/dupes/tcl-tk" => :optional
 
-  option "with-gtk3", "Build with gtk3 support"
-  requires_py3 = []
-  requires_py3 << "with-python3" if build.with? "python3"
-  if build.with? "gtk3"
-    depends_on "pygobject3" => requires_py3
-    depends_on "gtk+3"
+  if build.with? "cairo"
+    depends_on "py2cairo" if build.with? "python"
+    depends_on "py3cairo" if build.with? "python3"
   end
 
-  if build.with? "python"
-    depends_on "pygtk" => :optional
-    depends_on "pygobject" if build.with? "pygtk"
-    depends_on "gtk+" if build.with? "pygtk"
-  end
+  depends_on "gtk+3" => :optional
+  depends_on "pygobject3" => requires_py3 if build.with? "gtk+3"
 
-  if build.with? "python3"
-    depends_on "numpy" => "with-python3"
-    depends_on "pyside" => [:optional, "with-python3"]
-    depends_on "pyqt" => [:optional, "with-python3"]
-    depends_on "pyqt5" => [:optional, "with-python3"]
-    depends_on "py3cairo" if build.with? "cairo"
-  else
-    depends_on "numpy"
-    depends_on "pyside" => :optional
-    depends_on "pyqt" => :optional
-    depends_on "pyqt5" => [:optional, "with-python"]
-  end
+  depends_on "pygtk" => :optional
+  depends_on "pygobject" if build.with? "pygtk"
+
+  depends_on "pyside" => [:optional] + requires_py3
+  depends_on "pyqt" => [:optional] + requires_py3
+  depends_on "pyqt5" => [:optional] + requires_py2
+
+  depends_on :tex => :optional
+  depends_on DvipngRequirement if build.with? "tex"
 
   cxxstdlib_check :skip
 
@@ -97,6 +97,11 @@ class Matplotlib < Formula
   resource "pyparsing" do
     url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.3.tar.gz"
     sha1 "39299b6bb894a27fb9cd5b548c21d168b893b434"
+  end
+
+  resource "pytz" do
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.2.tar.bz2"
+    sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
   end
 
   resource "six" do
