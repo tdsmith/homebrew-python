@@ -25,6 +25,10 @@ class Numpy < Formula
     sha256 "76bc63a4e2d5e5a0df77ca7d18f0f56e2c46cfb62b71103ba92a92c79fab1e03"
   end
 
+  # fix build with build_ext --include-dirs set
+  # https://github.com/numpy/numpy/pull/5866
+  patch :DATA
+
   def install
     ENV["HOME"] = buildpath
 
@@ -81,3 +85,26 @@ class Numpy < Formula
     end
   end
 end
+__END__
+diff --git a/numpy/distutils/command/build_ext.py b/numpy/distutils/command/build_ext.py
+index b48e422..4311758 100644
+--- a/numpy/distutils/command/build_ext.py
++++ b/numpy/distutils/command/build_ext.py
+@@ -46,10 +46,14 @@ class build_ext (old_build_ext):
+         self.fcompiler = None
+
+     def finalize_options(self):
+-        incl_dirs = self.include_dirs
++        if isinstance(self.include_dirs, str):
++            self.include_dirs = self.include_dirs.split(os.pathsep)
++        incl_dirs = self.include_dirs or []
++        if self.distribution.include_dirs is None:
++            self.distribution.include_dirs = []
++        self.include_dirs = self.distribution.include_dirs
++        self.include_dirs.extend(incl_dirs)
+         old_build_ext.finalize_options(self)
+-        if incl_dirs is not None:
+-            self.include_dirs.extend(self.distribution.include_dirs or [])
+
+     def run(self):
+         if not self.extensions:
