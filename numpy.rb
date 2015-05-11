@@ -6,9 +6,10 @@ class Numpy < Formula
 
   bottle do
     root_url "https://homebrew.bintray.com/bottles-python"
-    sha256 "cbdc02a3509d2a77f6fa0b4cef32fb6c2415145804f3ad46b42c217c0bdd8729" => :yosemite
-    sha256 "2ad57a2b046cb4d0c0e14db01f1ea7b808636916d32d12cdb074cc949bce1f8a" => :mavericks
-    sha256 "0d9f802175c508484e2c8b34a6360280b9c923cfcc9bc61bbab70c49a2f60c88" => :mountain_lion
+    revision 1
+    sha256 "1381bc96dd9139aea43663425908043f6d8214e66e84838be32f1abb38f99d19" => :yosemite
+    sha256 "c853ae19bf4e8c95fb4c3e50cddf84e499c51354e6c1a83270e2cdf49c49d40e" => :mavericks
+    sha256 "d23b12434d7c73efff775e175405c00dd7ec660dde563baa377351344551b9ed" => :mountain_lion
   end
 
   option "without-python", "Build without python2 support"
