@@ -7,10 +7,9 @@ class Scipy < Formula
 
   bottle do
     root_url "https://homebrew.bintray.com/bottles-python"
-    cellar :any
-    sha256 "6dcdd9ef6be2bf5edac5127e6eb1c6c4dc940051b20cbb7d85ba75ef1a45f3f2" => :yosemite
-    sha256 "f8b9007e8c165f30cc85d7c4a15bd323f0df8fcabfdc42715fda9de53deb65f6" => :mavericks
-    sha256 "c90277dbcd72c62f4b74796e0a48779d91972db14feb3d2252ff22a17a473af5" => :mountain_lion
+    sha256 "d82a0edd5050bc79b2f5100aa54de4d0d21f9409fb2238f00f80ff3eefa10192" => :yosemite
+    sha256 "1bfcc2e4ea97a0922b5d1799d16ed9fbc1627e683efffc5df50bc0d7cb5787d9" => :mavericks
+    sha256 "a89b1ceeea4976d0f7de038c33766d191e42708aa2ff564f81f0b4a7a660321a" => :mountain_lion
   end
 
   option "without-python", "Build without python2 support"
