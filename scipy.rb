@@ -3,6 +3,7 @@ class Scipy < Formula
   url 'https://downloads.sourceforge.net/project/scipy/scipy/0.15.1/scipy-0.15.1.tar.gz'
   sha1 '7ef714ffe95230cd2ce78c51af18983bbe762f2e'
   head 'https://github.com/scipy/scipy.git'
+  revision 1
 
   bottle do
     root_url "https://homebrew.bintray.com/bottles-python"
