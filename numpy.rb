@@ -3,6 +3,7 @@ class Numpy < Formula
   url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.2/numpy-1.9.2.tar.gz"
   sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
   head "https://github.com/numpy/numpy.git"
+  revision 1
 
   bottle do
     root_url "https://homebrew.bintray.com/bottles-python"
