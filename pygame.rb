@@ -23,9 +23,11 @@ class Pygame < Formula
 
   # Upstream https://bitbucket.org/pygame/pygame/issue/94/src-scale_mmx64c-cannot-be-compiled-with
   # Will be fixed in next release.
-  patch :p0 do
-    url "https://bitbucket.org/pygame/pygame/issue-attachment/94/pygame/pygame/20111022/94/patch-src_scale_mmx64.c.diff"
-    sha1 "f189dfc2d684344a4ab756d76df26c05175b1e7e"
+  stable do
+    patch :p0 do
+      url "https://bitbucket.org/pygame/pygame/issue-attachment/94/pygame/pygame/20111022/94/patch-src_scale_mmx64.c.diff"
+      sha1 "f189dfc2d684344a4ab756d76df26c05175b1e7e"
+    end
   end
 
   def install
