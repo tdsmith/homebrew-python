@@ -26,9 +26,11 @@ class Numpy < Formula
     sha256 "76bc63a4e2d5e5a0df77ca7d18f0f56e2c46cfb62b71103ba92a92c79fab1e03"
   end
 
-  # fix build with build_ext --include-dirs set
-  # https://github.com/numpy/numpy/pull/5866
-  patch :DATA
+  stable do
+    # fix build with build_ext --include-dirs set
+    # https://github.com/numpy/numpy/pull/5866
+    patch :DATA
+  end
 
   def install
     ENV["HOME"] = buildpath
