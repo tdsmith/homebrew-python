@@ -15,7 +15,7 @@ class Pygame < Formula
   depends_on 'sdl_image'
   depends_on 'sdl_mixer'
   depends_on 'sdl_ttf'
-  depends_on 'homebrew/headonly/smpeg'
+  depends_on 'homebrew/head-only/smpeg' => "HEAD"
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'portmidi'
@@ -48,7 +48,7 @@ class Pygame < Formula
       s.gsub!(/^FONT =.*$/, "FONT = -I#{sdl_ttf}/include/SDL -lSDL_ttf")
       s.gsub!(/^IMAGE =.*$/, "IMAGE = -I#{sdl_image}/include/SDL -lSDL_image")
       s.gsub!(/^MIXER =.*$/, "MIXER = -I#{sdl_mixer}/include/SDL -lSDL_mixer")
-      s.gsub!(/^SMPEG =.*$/, "SMPEG = -I#{smpeg}/include/smpeg -lsmpeg")
+      s.gsub!(/^SMPEG =.*$/, "SMPEG = -I#{smpeg}/include/smpeg2 -lsmpeg")
       s.gsub!(/^PNG =.*$/, "PNG = -lpng")
       s.gsub!(/^JPEG =.*$/, "JPEG = -ljpeg")
       s.gsub!(/^PORTMIDI =.*$/, "PORTMIDI = -I#{portmidi}/include/ -lportmidi")
