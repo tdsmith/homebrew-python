@@ -19,7 +19,7 @@ class Numpy < Formula
   depends_on :fortran
 
   option "with-openblas", "Use openBLAS instead of Apple's Accelerate Framework"
-  depends_on "homebrew/science/openblas" => :optional
+  depends_on "homebrew/science/openblas" => (OS.mac? ? :optional : :recommended)
 
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.4.tar.gz"
