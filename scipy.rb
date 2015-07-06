@@ -19,7 +19,8 @@ class Scipy < Formula
   depends_on :python3 => :optional
   depends_on :fortran
 
-  option 'with-openblas', "Use openBLAS instead of Apple's Accelerate Framework"
+  option "with-openblas", "Use openblas instead of Apple's Accelerate framework " \
+                          "(required to build with gcc on OS X)"
   depends_on 'homebrew/science/openblas' => :optional
 
   numpy_options = []
@@ -28,6 +29,10 @@ class Scipy < Formula
   depends_on "numpy" => numpy_options
 
   cxxstdlib_check :skip
+
+  # https://github.com/Homebrew/homebrew-python/issues/110
+  # There are ongoing problems with gcc+accelerate.
+  fails_with :gcc if OS.mac? && build.without?("openblas")
 
   def install
     config = <<-EOS.undent
@@ -53,14 +58,6 @@ class Scipy < Formula
         library_dirs = #{openblas_dir}/lib
         include_dirs = #{openblas_dir}/include
       EOS
-    else
-      # https://github.com/Homebrew/homebrew-python/issues/110
-      # There are ongoing problems with gcc+accelerate.
-      odie "Please use brew install --with-openblas scipy to compile scipy using gcc." if ENV.compiler =~ /gcc-(4\.[3-9])/
-
-      # https://github.com/Homebrew/homebrew-python/pull/73
-      # Only save for gcc and allows you to `brew install scipy --cc=gcc-4.8`
-      # ENV.append 'CPPFLAGS', '-D__ACCELERATE__' if ENV.compiler =~ /gcc-(4\.[3-9])/
     end
 
     Pathname('site.cfg').write config
