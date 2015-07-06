@@ -35,6 +35,9 @@ class Scipy < Formula
   fails_with :gcc if OS.mac? && build.without?("openblas")
 
   def install
+    # avoid user numpy distutils config files
+    ENV["HOME"] = buildpath
+
     config = <<-EOS.undent
       [DEFAULT]
       library_dirs = #{HOMEBREW_PREFIX}/lib
