@@ -38,6 +38,14 @@ class Scipy < Formula
     # avoid user numpy distutils config files
     ENV["HOME"] = buildpath
 
+    # https://github.com/numpy/numpy/issues/4203
+    # https://github.com/Homebrew/homebrew-python/issues/209
+    # https://github.com/Homebrew/homebrew-python/issues/233
+    if OS.linux?
+      ENV.append "FFLAGS", "-fPIC"
+      ENV.append "LDFLAGS", "-shared"
+    end
+
     config = <<-EOS.undent
       [DEFAULT]
       library_dirs = #{HOMEBREW_PREFIX}/lib
