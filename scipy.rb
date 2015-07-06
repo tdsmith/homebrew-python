@@ -21,7 +21,7 @@ class Scipy < Formula
 
   option "with-openblas", "Use openblas instead of Apple's Accelerate framework " \
                           "(required to build with gcc on OS X)"
-  depends_on 'homebrew/science/openblas' => :optional
+  depends_on "homebrew/science/openblas" => (OS.mac? ? :optional : :recommended)
 
   numpy_options = []
   numpy_options << "with-python3" if build.with? "python3"
