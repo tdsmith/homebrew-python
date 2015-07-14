@@ -1,16 +1,15 @@
-require "formula"
-
 class Pillow < Formula
   homepage "https://github.com/python-imaging/Pillow"
   url "https://github.com/python-pillow/Pillow/archive/2.7.0.tar.gz"
-  sha1 "923cfa2108e0784b3c1c915f0ca835186e4b47f2"
+  sha256 "21872174a58674cdc20dba44d02f1d4cfe181214eb16793ad3d2830d45c59922"
   head "https://github.com/python-imaging/Pillow.git"
 
   # waiting on upstream resolution of JPEG2000 issues
   # https://github.com/python-pillow/Pillow/issues/767
   # option "with-openjpeg", "Enable JPEG2000 support"
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python2 support"
+
   depends_on :python3 => :optional
   depends_on "freetype"
   depends_on "jpeg"
@@ -25,11 +24,7 @@ class Pillow < Formula
 
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.3.tar.gz"
-    sha1 "cad94d4c58ce82d35355497a1c869922a603a9a5"
-  end
-
-  def package_installed? python, module_name
-    quiet_system python, "-c", "import #{module_name}"
+    sha256 "b40c2ff268beb85356ada25f626ca0dabc89705f31051649772cf00fc9510326"
   end
 
   def install
@@ -45,15 +40,13 @@ class Pillow < Formula
     ENV.append "CFLAGS", "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers" unless MacOS::CLT.installed?
 
     Language::Python.each_python(build) do |python, version|
-      unless package_installed?(python, "nose")
-        resource("nose").stage do
-          system python, *Language::Python.setup_install_args(libexec)
-          nose_path = libexec/"lib/python#{version}/site-packages"
-          dest_path = lib/"python#{version}/site-packages"
-          mkdir_p dest_path
-          (dest_path/"homebrew-pillow-nose.pth").atomic_write(nose_path.to_s + "\n")
-          ENV.append_path "PYTHONPATH", nose_path
-        end
+      resource("nose").stage do
+        system python, *Language::Python.setup_install_args(libexec)
+        nose_path = libexec/"lib/python#{version}/site-packages"
+        dest_path = lib/"python#{version}/site-packages"
+        mkdir_p dest_path
+        (dest_path/"homebrew-pillow-nose.pth").atomic_write(nose_path.to_s + "\n")
+        ENV.append_path "PYTHONPATH", nose_path
       end
       # don't accidentally discover openjpeg since it isn't working
       system python, "setup.py", "build_ext", "--disable-jpeg2000" # if build.without? "openjpeg"
