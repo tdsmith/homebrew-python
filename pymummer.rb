@@ -8,7 +8,7 @@ class Pymummer < Formula
 
   depends_on :python3
   depends_on "homebrew/science/mummer"
-  depends_on "numpy" => ["with-python3"]
+  depends_on "homebrew/python/numpy" => "with-python3"
 
   resource "pyfastaq" do
     url "https://pypi.python.org/packages/source/p/pyfastaq/pyfastaq-3.5.0.tar.gz"

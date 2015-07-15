@@ -11,7 +11,7 @@ class Vpython < Formula
 
   homepage "http://vpython.org/"
 
-  depends_on "numpy"
+  depends_on "homebrew/python/numpy"
   depends_on "wxpython"
 
   boost_args = []

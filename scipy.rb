@@ -26,7 +26,7 @@ class Scipy < Formula
   numpy_options = []
   numpy_options << "with-python3" if build.with? "python3"
   numpy_options << "with-openblas" if build.with? "openblas"
-  depends_on "numpy" => numpy_options
+  depends_on "homebrew/python/numpy" => numpy_options
 
   cxxstdlib_check :skip
 

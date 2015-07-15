@@ -63,7 +63,7 @@ class Matplotlib < Formula
 
   depends_on "freetype"
   depends_on "libpng"
-  depends_on "numpy" => requires_py3
+  depends_on "homebrew/python/numpy" => requires_py3
   depends_on "ghostscript" => :optional
   depends_on "homebrew/dupes/tcl-tk" => :optional
 

@@ -19,7 +19,7 @@ class Pygame < Formula
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'portmidi'
-  depends_on 'numpy'
+  depends_on 'homebrew/python/numpy'
 
   # Upstream https://bitbucket.org/pygame/pygame/issue/94/src-scale_mmx64c-cannot-be-compiled-with
   # Will be fixed in next release.

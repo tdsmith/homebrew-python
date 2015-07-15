@@ -11,13 +11,13 @@ class MatplotlibBasemap < Formula
   depends_on "geos"
 
   if build.with? "python3"
-    depends_on "numpy" => "with-python3"
-    depends_on "matplotlib" => "with-python3"
-    depends_on "pillow" => "with-python3"
+    depends_on "homebrew/python/numpy" => "with-python3"
+    depends_on "homebrew/python/matplotlib" => "with-python3"
+    depends_on "homebrew/python/pillow" => "with-python3"
   else
-    depends_on "numpy"
-    depends_on "matplotlib"
-    depends_on "pillow"
+    depends_on "homebrew/python/numpy"
+    depends_on "homebrew/python/matplotlib"
+    depends_on "homebrew/python/pillow"
   end
 
   resource "six" do
