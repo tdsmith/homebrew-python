@@ -1,6 +1,6 @@
 class Numpy < Formula
   homepage "http://www.numpy.org"
-  url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.2/numpy-1.9.2.tar.gz"
+  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.2.tar.gz"
   sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
   head "https://github.com/numpy/numpy.git"
   revision 1
