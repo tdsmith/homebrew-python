@@ -6,7 +6,6 @@ class Numpy < Formula
   revision 1
 
   bottle do
-    root_url "https://homebrew.bintray.com/bottles-python"
     sha256 "95c8fdecedf44341c655b7257319c4f815e9446613af2ee0892d5ea5b161cb29" => :yosemite
     sha256 "b53604d6433256dad5f11f18b118350e31516d9f78e0b731855ae6aacae8f79a" => :mavericks
     sha256 "015370402167df9a4e27dd1f8502cfb7ca8826be317a3a6b870fe62de2d99e91" => :mountain_lion

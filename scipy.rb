@@ -6,7 +6,6 @@ class Scipy < Formula
   revision 1
 
   bottle do
-    root_url "https://homebrew.bintray.com/bottles-python"
     sha256 "d82a0edd5050bc79b2f5100aa54de4d0d21f9409fb2238f00f80ff3eefa10192" => :yosemite
     sha256 "1bfcc2e4ea97a0922b5d1799d16ed9fbc1627e683efffc5df50bc0d7cb5787d9" => :mavericks
     sha256 "a89b1ceeea4976d0f7de038c33766d191e42708aa2ff564f81f0b4a7a660321a" => :mountain_lion
