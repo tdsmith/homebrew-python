@@ -15,7 +15,7 @@ class Pygame < Formula
   depends_on 'sdl_image'
   depends_on 'sdl_mixer'
   depends_on 'sdl_ttf'
-  depends_on 'homebrew/head-only/smpeg' => "HEAD"
+  depends_on 'smpeg'
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'portmidi'
