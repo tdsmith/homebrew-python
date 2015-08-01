@@ -1,13 +1,9 @@
-require 'formula'
-
-# Todo: Install examples, run test
-# todo: What about sdl_gfx?
-# todo: depends_on :x11 ???
-
 class Pygame < Formula
   homepage 'http://pygame.org'
-  url 'http://pygame.org/ftp/pygame-1.9.1release.tar.gz'
-  sha1 'a45aeb0623e36ae7a1707b5f41ee6274f72ca4fa'
+  url "https://bitbucket.org/pygame/pygame",
+      :revision => "faa5879a7e6bfe10e4e5c79d04a3d2fb65d74a62",
+      :using => :hg
+  version "1.9.2a0"
   head 'https://bitbucket.org/pygame/pygame', :using => :hg
 
   depends_on :python
@@ -20,15 +16,7 @@ class Pygame < Formula
   depends_on 'libpng'
   depends_on 'portmidi'
   depends_on 'homebrew/python/numpy'
-
-  # Upstream https://bitbucket.org/pygame/pygame/issue/94/src-scale_mmx64c-cannot-be-compiled-with
-  # Will be fixed in next release.
-  stable do
-    patch :p0 do
-      url "https://bitbucket.org/pygame/pygame/issue-attachment/94/pygame/pygame/20111022/94/patch-src_scale_mmx64.c.diff"
-      sha1 "f189dfc2d684344a4ab756d76df26c05175b1e7e"
-    end
-  end
+  depends_on "freetype"
 
   def install
     # We provide a "Setup" file based on the "Setup.in" because the detection
@@ -53,6 +41,7 @@ class Pygame < Formula
       s.gsub!(/^JPEG =.*$/, "JPEG = -ljpeg")
       s.gsub!(/^PORTMIDI =.*$/, "PORTMIDI = -I#{portmidi}/include/ -lportmidi")
       s.gsub!(/^PORTTIME =.*$/, "PORTTIME = -I#{portmidi}/include/ -lportmidi")
+      s.gsub!(/^FREETYPE =.*$/, "FREETYPE = -I#{Formula["freetype"].opt_include}/freetype2 -lfreetype")
     end
 
     # Manually append what is the default for PyGame on the Mac
