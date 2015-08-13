@@ -4,6 +4,12 @@ class Numba < Formula
   url "https://pypi.python.org/packages/source/n/numba/numba-0.20.0.tar.gz"
   sha256 "6e26608bd8ce42dc513f129040e8258a66e0a6ebdfbd0376b31c80f26976a7f2"
 
+  bottle do
+    sha256 "137e0c2d1377d31f9cc15f89ad84f1d2d2a203aa6fc8068c22b0803e9cbaab8d" => :yosemite
+    sha256 "26fbb8d2a6c213c3820d9f09c641480204841b6c418d3e9c3fb740b15a72eeee" => :mavericks
+    sha256 "28c11ce38a36a3934ab965862b1cb3073c2d544bf01667c3bfcf692cbae1dfb2" => :mountain_lion
+  end
+
   option "without-python", "Build without python2 support"
   depends_on :python3 => :optional
 
