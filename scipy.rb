@@ -1,9 +1,8 @@
 class Scipy < Formula
   homepage 'http://www.scipy.org'
-  url "https://pypi.python.org/packages/source/s/scipy/scipy-0.15.1.tar.gz"
-  sha256 "a212cbc3b79e9a563aa45fc5c517b3499198bd7eb7e7be1e047568a5f48c259a"
+  url "https://pypi.python.org/packages/source/s/scipy/scipy-0.16.0.tar.gz"
+  sha256 "92592f40097098f3fdbe7f5855d535b29bb16719c2bb59c728bce5e7a28790e0"
   head 'https://github.com/scipy/scipy.git'
-  revision 1
 
   bottle do
     sha256 "d82a0edd5050bc79b2f5100aa54de4d0d21f9409fb2238f00f80ff3eefa10192" => :yosemite
@@ -32,6 +31,12 @@ class Scipy < Formula
   # https://github.com/Homebrew/homebrew-python/issues/110
   # There are ongoing problems with gcc+accelerate.
   fails_with :gcc if OS.mac? && build.without?("openblas")
+
+  stable do
+    # Hint Python headers
+    # https://github.com/scipy/scipy/issues/5154
+    patch :DATA
+  end
 
   def install
     # avoid user numpy distutils config files
@@ -74,6 +79,7 @@ class Scipy < Formula
 
     # gfortran is gnu95
     Language::Python.each_python(build) do |python, version|
+      ENV["PYTHONPATH"] = Formula["numpy"].opt_lib/"python#{version}/site-packages"
       ENV.prepend_create_path "PYTHONPATH", lib/"python#{version}/site-packages"
       system python, "setup.py", "build", "--fcompiler=gnu95"
       system python, *Language::Python.setup_install_args(prefix)
@@ -109,3 +115,25 @@ class Scipy < Formula
   end
 
 end
+__END__
+diff --git a/scipy/linalg/setup.py b/scipy/linalg/setup.py
+index 452673d..56c8dd1 100755
+--- a/scipy/linalg/setup.py
++++ b/scipy/linalg/setup.py
+@@ -6,6 +6,7 @@
+
+
+ def configuration(parent_package='',top_path=None):
++    from distutils.sysconfig import get_python_inc
+     from numpy.distutils.system_info import get_info, NotFoundError, numpy_info
+     from numpy.distutils.misc_util import Configuration, get_numpy_include_dirs
+     from scipy._build_utils import (get_sgemv_fix, get_g77_abi_wrappers,
+@@ -137,7 +138,7 @@ def configuration(parent_package='',top_path=None):
+     sources = ['_blas_subroutine_wrappers.f', '_lapack_subroutine_wrappers.f']
+     sources += get_g77_abi_wrappers(lapack_opt)
+     sources += get_sgemv_fix(lapack_opt)
+-    includes = numpy_info().get_include_dirs()
++    includes = numpy_info().get_include_dirs() + [get_python_inc()]
+     config.add_library('fwrappers', sources=sources, include_dirs=includes)
+
+     config.add_extension('cython_blas',
