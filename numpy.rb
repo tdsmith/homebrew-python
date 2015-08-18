@@ -32,8 +32,6 @@ class Numpy < Formula
   end
 
   def install
-    ENV["HOME"] = buildpath
-
     # https://github.com/numpy/numpy/issues/4203
     # https://github.com/Homebrew/homebrew-python/issues/209
     ENV.append "LDFLAGS", "-shared" if OS.linux?

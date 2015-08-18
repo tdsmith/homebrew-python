@@ -39,9 +39,6 @@ class Scipy < Formula
   end
 
   def install
-    # avoid user numpy distutils config files
-    ENV["HOME"] = buildpath
-
     # https://github.com/numpy/numpy/issues/4203
     # https://github.com/Homebrew/homebrew-python/issues/209
     # https://github.com/Homebrew/homebrew-python/issues/233
