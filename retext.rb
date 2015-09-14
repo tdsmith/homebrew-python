@@ -1,9 +1,8 @@
-require "formula"
-
 class Retext < Formula
   homepage "http://sourceforge.net/projects/retext/"
   url "https://downloads.sourceforge.net/project/retext/ReText-4.1/ReText-4.1.3.tar.gz"
   sha1 "2b18319e17c2f62816926de46a2d18fa820e2e21"
+  revision 1
 
   depends_on :python3
   depends_on "pyqt" => "with-python3"
