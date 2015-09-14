@@ -4,6 +4,13 @@ class Retext < Formula
   sha1 "2b18319e17c2f62816926de46a2d18fa820e2e21"
   revision 1
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "945f8f977ee6b12925878450832ba330a49da35e2bd3fc3a7432024d2d5698f2" => :yosemite
+    sha256 "ba58f5250b1c149ad48068565587c84b25d3facdcea656ea7c8a4b3a24e9c0c4" => :mavericks
+    sha256 "faa88d9f1843b9cbb1d8361162c86eee20e72359c4c35feb7ff9a71e318878a1" => :mountain_lion
+  end
+
   depends_on :python3
   depends_on "pyqt" => "with-python3"
   # workaround for Homebrew dependency issue, 7/7/14
