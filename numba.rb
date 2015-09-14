@@ -1,8 +1,8 @@
 class Numba < Formula
   desc "NumPy aware dynamic Python compiler using LLVM"
   homepage "http://numba.pydata.org/"
-  url "https://pypi.python.org/packages/source/n/numba/numba-0.20.0.tar.gz"
-  sha256 "6e26608bd8ce42dc513f129040e8258a66e0a6ebdfbd0376b31c80f26976a7f2"
+  url "https://pypi.python.org/packages/source/n/numba/numba-0.21.0.tar.gz"
+  sha256 "1806d2f6ad49ad891e9ac6fed0cc0b0489cbfcd9ba2dc81081c1c30091e77604"
 
   bottle do
     sha256 "137e0c2d1377d31f9cc15f89ad84f1d2d2a203aa6fc8068c22b0803e9cbaab8d" => :yosemite
@@ -27,8 +27,8 @@ class Numba < Formula
   end
 
   resource "llvmlite" do
-    url "https://pypi.python.org/packages/source/l/llvmlite/llvmlite-0.6.0.tar.gz"
-    sha256 "0ed6bbf850578dc99c06be3060a1067ea4993474392137760d1c020f7188a236"
+    url "https://pypi.python.org/packages/source/l/llvmlite/llvmlite-0.7.0.tar.gz"
+    sha256 "6d780980da05d2d82465991bce42c1b4625018d67feae17c672c6a9d5ad0bb1a"
   end
 
   resource "singledispatch" do
@@ -52,9 +52,10 @@ class Numba < Formula
           resource(r).stage { system python, *Language::Python.setup_install_args(libexec/"vendor") }
         end
       end
+
       resource("llvmlite").stage do
-        # https://github.com/numba/llvmlite/pull/77
-        inreplace "ffi/initfini.cpp", "Config/config.h", "Config/llvm-config.h"
+        # https://github.com/numba/llvmlite/issues/97
+        inreplace "ffi/Makefile.osx", /CXX =.*/, "\\0 -fno-rtti"
         system python, *Language::Python.setup_install_args(libexec/"vendor")
       end
 
