@@ -4,6 +4,7 @@ class Pymummer < Formula
   url "https://github.com/sanger-pathogens/pymummer/archive/v0.4.0.tar.gz"
   sha256 "900b25019e5351882ea62c5992f019903cb838a2c80375de3842159e04cf1588"
   head "https://github.com/sanger-pathogens/pymummer.git"
+  revision 1
   # tag "bioinformatics"
 
   depends_on :python3
