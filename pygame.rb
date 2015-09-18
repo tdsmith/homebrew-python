@@ -6,7 +6,8 @@ class Pygame < Formula
   version "1.9.2a0"
   head 'https://bitbucket.org/pygame/pygame', :using => :hg
 
-  depends_on :python
+  option "without-python", "Build without python2 support"
+  depends_on :python3 => :optional
   depends_on 'sdl'
   depends_on 'sdl_image'
   depends_on 'sdl_mixer'
@@ -47,7 +48,9 @@ class Pygame < Formula
     # Manually append what is the default for PyGame on the Mac
     system "cat Setup_Darwin.in >> Setup"
 
-    ENV.prepend_create_path "PYTHONPATH", lib+"python2.7/site-packages"
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    Language::Python.each_python(build) do |python, version|
+        ENV.prepend_create_path "PYTHONPATH", lib+"python#{version}/site-packages"
+        system python, "setup.py", "install", "--prefix=#{prefix}"
+    end
   end
 end
