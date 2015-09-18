@@ -50,7 +50,7 @@ class Pygame < Formula
 
     Language::Python.each_python(build) do |python, version|
         ENV.prepend_create_path "PYTHONPATH", lib+"python#{version}/site-packages"
-        system python, "setup.py", "install", "--prefix=#{prefix}"
+        system python, *Language::Python.setup_install_args(prefix)
     end
   end
 end
