@@ -1,9 +1,8 @@
 class Numpy < Formula
   homepage "http://www.numpy.org"
-  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.2.tar.gz"
-  sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
+  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.3.tar.gz"
+  sha256 "c3b74d3b9da4ceb11f66abd21e117da8cf584b63a0efbd01a9b7e91b693fbbd6"
   head "https://github.com/numpy/numpy.git"
-  revision 1
 
   bottle do
     sha256 "95c8fdecedf44341c655b7257319c4f815e9446613af2ee0892d5ea5b161cb29" => :yosemite
@@ -23,12 +22,6 @@ class Numpy < Formula
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.4.tar.gz"
     sha256 "76bc63a4e2d5e5a0df77ca7d18f0f56e2c46cfb62b71103ba92a92c79fab1e03"
-  end
-
-  stable do
-    # fix build with build_ext --include-dirs set
-    # https://github.com/numpy/numpy/pull/5866
-    patch :DATA
   end
 
   def install
@@ -85,26 +78,3 @@ class Numpy < Formula
     end
   end
 end
-__END__
-diff --git a/numpy/distutils/command/build_ext.py b/numpy/distutils/command/build_ext.py
-index b48e422..4311758 100644
---- a/numpy/distutils/command/build_ext.py
-+++ b/numpy/distutils/command/build_ext.py
-@@ -46,10 +46,14 @@ class build_ext (old_build_ext):
-         self.fcompiler = None
-
-     def finalize_options(self):
--        incl_dirs = self.include_dirs
-+        if isinstance(self.include_dirs, str):
-+            self.include_dirs = self.include_dirs.split(os.pathsep)
-+        incl_dirs = self.include_dirs or []
-+        if self.distribution.include_dirs is None:
-+            self.distribution.include_dirs = []
-+        self.include_dirs = self.distribution.include_dirs
-+        self.include_dirs.extend(incl_dirs)
-         old_build_ext.finalize_options(self)
--        if incl_dirs is not None:
--            self.include_dirs.extend(self.distribution.include_dirs or [])
-
-     def run(self):
-         if not self.extensions:
