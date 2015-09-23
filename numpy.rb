@@ -5,9 +5,10 @@ class Numpy < Formula
   head "https://github.com/numpy/numpy.git"
 
   bottle do
-    sha256 "95c8fdecedf44341c655b7257319c4f815e9446613af2ee0892d5ea5b161cb29" => :yosemite
-    sha256 "b53604d6433256dad5f11f18b118350e31516d9f78e0b731855ae6aacae8f79a" => :mavericks
-    sha256 "015370402167df9a4e27dd1f8502cfb7ca8826be317a3a6b870fe62de2d99e91" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5ab4ab976855784259d08011bf1eb7068135cea5ee675ea4a07d686d82bb2825" => :el_capitan
+    sha256 "343a6f92430203799f4178560cc58ab4c3d6c029f3bd1f92f66f39c176e93f42" => :yosemite
+    sha256 "54247182634b864117e0ca865e43b6f9fcf24ae2c1040dbd982d6a0d47cfe55b" => :mavericks
   end
 
   option "without-python", "Build without python2 support"
