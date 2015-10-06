@@ -1,7 +1,7 @@
 class Numpy < Formula
   homepage "http://www.numpy.org"
-  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.3.tar.gz"
-  sha256 "c3b74d3b9da4ceb11f66abd21e117da8cf584b63a0efbd01a9b7e91b693fbbd6"
+  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.0.tar.gz"
+  sha256 "43b00f5d52b374a731444ba2724bfa1debdbc93312a1b9b28e99700498d169b6"
   head "https://github.com/numpy/numpy.git"
 
   bottle do
@@ -21,8 +21,8 @@ class Numpy < Formula
   depends_on "homebrew/science/openblas" => (OS.mac? ? :optional : :recommended)
 
   resource "nose" do
-    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.4.tar.gz"
-    sha256 "76bc63a4e2d5e5a0df77ca7d18f0f56e2c46cfb62b71103ba92a92c79fab1e03"
+    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.7.tar.gz"
+    sha256 "f1bffef9cbc82628f6e7d7b40d7e255aefaa1adb6a1b1d26c69a8b79e6208a98"
   end
 
   def install
