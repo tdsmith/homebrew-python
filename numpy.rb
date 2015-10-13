@@ -1,7 +1,7 @@
 class Numpy < Formula
   homepage "http://www.numpy.org"
-  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.0.tar.gz"
-  sha256 "43b00f5d52b374a731444ba2724bfa1debdbc93312a1b9b28e99700498d169b6"
+  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.1.tar.gz"
+  sha256 "8b9f453f29ce96a14e625100d3dcf8926301d36c5f622623bf8820e748510858"
   head "https://github.com/numpy/numpy.git"
 
   bottle do
