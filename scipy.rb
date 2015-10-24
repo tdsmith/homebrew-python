@@ -1,8 +1,9 @@
 class Scipy < Formula
-  homepage 'http://www.scipy.org'
-  url "https://pypi.python.org/packages/source/s/scipy/scipy-0.16.0.tar.gz"
-  sha256 "92592f40097098f3fdbe7f5855d535b29bb16719c2bb59c728bce5e7a28790e0"
-  head 'https://github.com/scipy/scipy.git'
+  desc "Software for mathematics, science, and engineering"
+  homepage "http://www.scipy.org"
+  url "https://pypi.python.org/packages/source/s/scipy/scipy-0.16.1.tar.gz"
+  sha256 "ecd1efbb1c038accb0516151d1e6679809c6010288765eb5da6051550bf52260"
+  head "https://github.com/scipy/scipy.git"
 
   bottle do
     sha256 "18f227d835bf67019aa6f383aa40ffe508201dff905ada6c8f8c8968e56dc689" => :yosemite
@@ -12,7 +13,7 @@ class Scipy < Formula
 
   option "without-python", "Build without python2 support"
 
-  depends_on 'swig' => :build
+  depends_on "swig" => :build
   depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
   depends_on :fortran
@@ -32,12 +33,6 @@ class Scipy < Formula
   # There are ongoing problems with gcc+accelerate.
   fails_with :gcc if OS.mac? && build.without?("openblas")
 
-  stable do
-    # Hint Python headers
-    # https://github.com/scipy/scipy/issues/5154
-    patch :DATA
-  end
-
   def install
     # https://github.com/numpy/numpy/issues/4203
     # https://github.com/Homebrew/homebrew-python/issues/209
@@ -51,9 +46,8 @@ class Scipy < Formula
       [DEFAULT]
       library_dirs = #{HOMEBREW_PREFIX}/lib
       include_dirs = #{HOMEBREW_PREFIX}/include
-
     EOS
-    if build.with? 'openblas'
+    if build.with? "openblas"
       # For maintainers:
       # Check which BLAS/LAPACK numpy actually uses via:
       # xcrun otool -L $(brew --prefix)/Cellar/scipy/<version>/lib/python2.7/site-packages/scipy/linalg/_flinalg.so
@@ -61,8 +55,8 @@ class Scipy < Formula
       openblas_dir = Formula["openblas"].opt_prefix
       # Setting ATLAS to None is important to prevent numpy from always
       # linking against Accelerate.framework.
-      ENV['ATLAS'] = "None"
-      ENV['BLAS'] = ENV['LAPACK'] = "#{openblas_dir}/lib/libopenblas.dylib"
+      ENV["ATLAS"] = "None"
+      ENV["BLAS"] = ENV["LAPACK"] = "#{openblas_dir}/lib/libopenblas.dylib"
 
       config << <<-EOS.undent
         [openblas]
@@ -72,7 +66,7 @@ class Scipy < Formula
       EOS
     end
 
-    Pathname('site.cfg').write config
+    Pathname("site.cfg").write config
 
     # gfortran is gnu95
     Language::Python.each_python(build) do |python, version|
@@ -86,19 +80,13 @@ class Scipy < Formula
   # cleanup leftover .pyc files from previous installs which can cause problems
   # see https://github.com/Homebrew/homebrew-python/issues/185#issuecomment-67534979
   def post_install
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |_python, version|
       rm_f Dir["#{HOMEBREW_PREFIX}/lib/python#{version}/site-packages/scipy/**/*.pyc"]
     end
   end
 
-  test do
-    Language::Python.each_python(build) do |python, version|
-      system python, "-c", "import scipy; assert not scipy.test().failures"
-    end
-  end
-
   def caveats
-    if build.with? "python" and not Formula["python"].installed?
+    if (build.with? "python") && !Formula["python"].installed?
       homebrew_site_packages = Language::Python.homebrew_site_packages
       user_site_packages = Language::Python.user_site_packages "python"
       <<-EOS.undent
@@ -111,26 +99,9 @@ class Scipy < Formula
     end
   end
 
+  test do
+    Language::Python.each_python(build) do |python, _version|
+      system python, "-c", "import scipy; assert not scipy.test().failures"
+    end
+  end
 end
-__END__
-diff --git a/scipy/linalg/setup.py b/scipy/linalg/setup.py
-index 452673d..56c8dd1 100755
---- a/scipy/linalg/setup.py
-+++ b/scipy/linalg/setup.py
-@@ -6,6 +6,7 @@
-
-
- def configuration(parent_package='',top_path=None):
-+    from distutils.sysconfig import get_python_inc
-     from numpy.distutils.system_info import get_info, NotFoundError, numpy_info
-     from numpy.distutils.misc_util import Configuration, get_numpy_include_dirs
-     from scipy._build_utils import (get_sgemv_fix, get_g77_abi_wrappers,
-@@ -137,7 +138,7 @@ def configuration(parent_package='',top_path=None):
-     sources = ['_blas_subroutine_wrappers.f', '_lapack_subroutine_wrappers.f']
-     sources += get_g77_abi_wrappers(lapack_opt)
-     sources += get_sgemv_fix(lapack_opt)
--    includes = numpy_info().get_include_dirs()
-+    includes = numpy_info().get_include_dirs() + [get_python_inc()]
-     config.add_library('fwrappers', sources=sources, include_dirs=includes)
-
-     config.add_extension('cython_blas',
