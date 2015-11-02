@@ -1,8 +1,8 @@
 class Retext < Formula
-  homepage "http://sourceforge.net/projects/retext/"
-  url "https://downloads.sourceforge.net/project/retext/ReText-4.1/ReText-4.1.3.tar.gz"
-  sha256 "bb4409982d27ac62cab01b0748fe41d9c6660853668b350f3369e76d155edd6c"
-  revision 1
+  desc "Powerful editor for Markdown and reStructuredText"
+  homepage "https://github.com/retext-project/retext"
+  url "https://github.com/retext-project/retext/archive/5.2.1.tar.gz"
+  sha256 "a1ec52bedf65332d817623f8552204a00adb8b7ce54d59359f07a18f821909a1"
 
   bottle do
     cellar :any_skip_relocation
@@ -18,23 +18,23 @@ class Retext < Formula
   depends_on "enchant"
 
   resource "icons" do
-    url "https://downloads.sourceforge.net/project/retext/Icons/ReTextIcons_r3.tar.gz"
-    sha256 "13d61b338296c299f40ecb3a81271f67e61b3b9769ab8c381fafa5b2e48950d7"
+    url "https://downloads.sourceforge.net/project/retext/Icons/ReTextIcons_r4.tar.gz"
+    sha256 "c0a8c9791d320ef685a9087f230418f3308e6ccbefbf768b827490cde4084fd9"
   end
 
   resource "markups" do
-    url "https://pypi.python.org/packages/source/M/Markups/Markups-0.4.tar.gz"
-    sha256 "3c33a19200a224b9c320e48557ec29e13dbe8094c6670da2851b75d6657950b8"
+    url "https://pypi.python.org/packages/source/M/Markups/Markups-0.6.3.tar.gz"
+    sha256 "e3ff5de2be018240c526e017972b37181cb3d5dfb7c96ad14eae6639140f58ef"
   end
 
   resource "markdown" do
-    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.1.tar.gz"
-    sha256 "812ec5249f45edc31330b7fb06e52aaf6ab2d83aa27047df7cb6837ef2d269b6"
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.3.tar.gz"
+    sha256 "ad75fc03c45492eba3bc63645e1e6465f65523a05fff0abf36910f810465a9af"
   end
 
   resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.11.tar.gz"
-    sha256 "9af4166adf364447289c5c697bb83c52f1d6f57e77849abcccd6a4a18a5e7ec9"
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
   end
 
   resource "pyenchant" do
@@ -47,9 +47,11 @@ class Retext < Formula
     ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{version}/site-packages"
 
-    res = %w{markups markdown docutils pyenchant}
+    res = %w[markups markdown docutils pyenchant]
     res.each do |r|
-      resource(r).stage { system "python3", "setup.py", "install", "--prefix=#{libexec}" }
+      resource(r).stage do
+        system "python3", "setup.py", "install", "--prefix=#{libexec}"
+      end
     end
 
     system "python3", "setup.py", "install", "--prefix=#{prefix}"
