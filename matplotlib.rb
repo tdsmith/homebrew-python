@@ -34,8 +34,8 @@ end
 
 class Matplotlib < Formula
   homepage "http://matplotlib.org"
-  url "https://pypi.python.org/packages/source/m/matplotlib/matplotlib-1.4.3.tar.gz"
-  sha256 "61f201c6a82e89e4d9e324266203fad44f95fd8f36d8eec0d8690273e1182f75"
+  url "https://pypi.python.org/packages/source/m/matplotlib/matplotlib-1.5.0.tar.gz"
+  sha256 "67b08b1650a00a6317d94b76a30a47320087e5244920604c5462188cba0c2646"
   head "https://github.com/matplotlib/matplotlib.git"
 
   bottle do
@@ -86,34 +86,54 @@ class Matplotlib < Formula
 
   cxxstdlib_check :skip
 
-  resource "dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.tar.bz2"
-    sha256 "a9f62b12e28f11c732ad8e255721a9c7ab905f9479759491bc1f1e91de548d0f"
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.6.1.tar.gz"
+    sha256 "ddb0f4bdd1ac0ceb41abfe561d6196a840abb76371551dbf0c3e59d8d5cde99a"
   end
 
-  resource "mock" do
-    url "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz"
-    sha1 "ba2b1d5f84448497e14e25922c5e3293f0a91c7e"
+  resource "Cycler" do
+    url "https://pypi.python.org/packages/source/C/Cycler/cycler-0.9.0.tar.gz"
+    sha256 "96dc4ddf27ef62c09990c6196ac1167685e89168042ec0ae4db586de023355bc"
+  end
+
+  resource "funcsigs" do
+    url "https://pypi.python.org/packages/source/f/funcsigs/funcsigs-0.4.tar.gz"
+    sha256 "d83ce6df0b0ea6618700fe1db353526391a8a3ada1b7aba52fed7a61da772033"
   end
 
   resource "nose" do
-    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.4.tar.gz"
-    sha1 "4d21578b480540e4e50ffae063094a14db2487d7"
+    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.7.tar.gz"
+    sha256 "f1bffef9cbc82628f6e7d7b40d7e255aefaa1adb6a1b1d26c69a8b79e6208a98"
+  end
+
+  resource "mock" do
+    url "https://pypi.python.org/packages/source/m/mock/mock-1.3.0.tar.gz"
+    sha256 "1e247dbecc6ce057299eb7ee019ad68314bb93152e81d9a6110d35f4d5eca0f6"
+  end
+
+  resource "pbr" do
+    url "https://pypi.python.org/packages/source/p/pbr/pbr-1.8.1.tar.gz"
+    sha256 "e2127626a91e6c885db89668976db31020f0af2da728924b56480fc7ccf09649"
   end
 
   resource "pyparsing" do
-    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.3.tar.gz"
-    sha1 "39299b6bb894a27fb9cd5b548c21d168b893b434"
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.6.tar.gz"
+    sha256 "aea69042752ad7e9c436eea6ae5d40e73642e27f50edb6da4a2532030ef532da"
+  end
+
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.2.tar.gz"
+    sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.2.tar.bz2"
-    sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.7.tar.bz2"
+    sha256 "fbd26746772c24cb93c8b97cbdad5cb9e46c86bbdb1b9d8a743ee00e2fb1fc5d"
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   def install
@@ -137,9 +157,7 @@ class Matplotlib < Formula
           system python, *Language::Python.setup_install_args(libexec)
         end
       end
-      dest_path = lib/"python#{version}/site-packages"
-      dest_path.mkpath
-      (dest_path/"homebrew-matplotlib-bundle.pth").write "#{bundle_path}\n"
+      (lib/"python#{version}/site-packages/homebrew-matplotlib-bundle.pth").write "#{bundle_path}\n"
 
       system python, *Language::Python.setup_install_args(prefix)
     end
@@ -165,8 +183,10 @@ class Matplotlib < Formula
   end
 
   test do
+    ENV["PYTHONDONTWRITEBYTECODE"] = "1"
+
     ohai "This test takes quite a while. Use --verbose to see progress."
-    Language::Python.each_python(build) do |python, _version|
+    Language::Python.each_python(build) do |python, _|
       system python, "-c", "import matplotlib as m; m.test()"
     end
   end
