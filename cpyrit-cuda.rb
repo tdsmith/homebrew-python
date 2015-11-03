@@ -1,18 +1,16 @@
-require 'formula'
-
 class CudaRequirement < Requirement
   build true
   fatal true
 
-  satisfy { which 'nvcc' }
+  satisfy { which "nvcc" }
 
   env do
     # nVidia CUDA installs (externally) into this dir (hard-coded):
-    ENV.append 'CFLAGS', "-F/Library/Frameworks"
+    ENV.append "CFLAGS", "-F/Library/Frameworks"
     # because nvcc has to be used
-    ENV.append_path 'PATH', which('nvcc').dirname
+    ENV.append_path "PATH", which("nvcc").dirname
 
-    ENV.append 'LDFLAGS', "-L/usr/local/cuda/lib"
+    ENV.append "LDFLAGS", "-L/usr/local/cuda/lib"
   end
 
   def message
@@ -33,17 +31,16 @@ class CudaRequirement < Requirement
 end
 
 class CpyritCuda < Formula
-  homepage 'https://code.google.com/p/pyrit/'
-  url 'https://pyrit.googlecode.com/files/cpyrit-cuda-0.4.0.tar.gz'
-  sha1 '6481b1d104fc8a1753d50d517b99638782171a08'
+  homepage "https://code.google.com/p/pyrit/"
+  url "https://pyrit.googlecode.com/files/cpyrit-cuda-0.4.0.tar.gz"
+  sha256 "6035f01874f699f010e460618694ec876f719bea475313b991f5dd3dd84d831b"
 
   depends_on :python
-  depends_on 'pyrit'
+  depends_on "pyrit"
   depends_on CudaRequirement
 
   def install
     system "python", "setup.py", "build"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
   end
-
 end
