@@ -1,9 +1,7 @@
-require "formula"
-
 class PythonDbus < Formula
-  homepage "http://freedesktop.org"
+  homepage "https://freedesktop.org"
   url "http://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.0.tar.gz"
-  sha1 "7a00f7861d26683ab7e3f4418860bd426deed9b5"
+  sha256 "e12c6c8b2bf3a9302f75166952cbe41d6b38c3441bbc6767dbd498942316c6df"
 
   depends_on "pkg-config" => :build
   depends_on "d-bus"
@@ -20,7 +18,7 @@ class PythonDbus < Formula
     # https://bugs.freedesktop.org/show_bug.cgi?id=57140
     inreplace "test/test-standalone.py", "def test_utf8(self):", "def skip_utf8(self):"
 
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _|
       ENV["PYTHON"] = python
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}"
@@ -33,7 +31,7 @@ class PythonDbus < Formula
   end
 
   test do
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _|
       system python, "-c", "import dbus"
     end
   end
