@@ -1,7 +1,8 @@
 class Pymssql < Formula
+  desc "Python DB-API interface to Microsoft SQL Server."
   homepage "http://pymssql.org/"
   url "https://pypi.python.org/packages/source/p/pymssql/pymssql-2.1.1.tar.gz"
-  sha1 "968a254acf5358b79ad362247984c69b2855b712"
+  sha256 "f1a1601dc3322c785733c84639d8d640c7204f9db4eab5f2a5cc908fb157140f"
   head "https://github.com/pymssql/pymssql.git"
 
   depends_on :python => :recommended
