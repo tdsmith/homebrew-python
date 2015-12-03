@@ -1,7 +1,7 @@
 class Retext < Formula
   homepage "http://sourceforge.net/projects/retext/"
   url "https://downloads.sourceforge.net/project/retext/ReText-4.1/ReText-4.1.3.tar.gz"
-  sha1 "2b18319e17c2f62816926de46a2d18fa820e2e21"
+  sha256 "bb4409982d27ac62cab01b0748fe41d9c6660853668b350f3369e76d155edd6c"
   revision 1
 
   bottle do
@@ -19,27 +19,27 @@ class Retext < Formula
 
   resource "icons" do
     url "https://downloads.sourceforge.net/project/retext/Icons/ReTextIcons_r3.tar.gz"
-    sha1 "c51d4a687c21b7de3fd24a14a7ae16e9b0869e31"
+    sha256 "13d61b338296c299f40ecb3a81271f67e61b3b9769ab8c381fafa5b2e48950d7"
   end
 
   resource "markups" do
     url "https://pypi.python.org/packages/source/M/Markups/Markups-0.4.tar.gz"
-    sha1 "47c9fa5c0ad7076b6b52346d59195f5651cb670a"
+    sha256 "3c33a19200a224b9c320e48557ec29e13dbe8094c6670da2851b75d6657950b8"
   end
 
   resource "markdown" do
     url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.1.tar.gz"
-    sha1 "2c9cedad000e9ecdf0b220bd1ad46bc4592d067e"
+    sha256 "812ec5249f45edc31330b7fb06e52aaf6ab2d83aa27047df7cb6837ef2d269b6"
   end
 
   resource "docutils" do
     url "https://pypi.python.org/packages/source/d/docutils/docutils-0.11.tar.gz"
-    sha1 "3894ebcbcbf8aa54ce7c3d2c8f05460544912d67"
+    sha256 "9af4166adf364447289c5c697bb83c52f1d6f57e77849abcccd6a4a18a5e7ec9"
   end
 
   resource "pyenchant" do
     url "https://pypi.python.org/packages/source/p/pyenchant/pyenchant-1.6.6.tar.gz"
-    sha1 "353b0b06cb29deef46298337afdd96ec71f01625"
+    sha256 "25c9d2667d512f8fc4410465fdd2e868377ca07eb3d56e2b6e534a86281d64d3"
   end
 
   def install
