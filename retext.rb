@@ -6,9 +6,9 @@ class Retext < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "945f8f977ee6b12925878450832ba330a49da35e2bd3fc3a7432024d2d5698f2" => :yosemite
-    sha256 "ba58f5250b1c149ad48068565587c84b25d3facdcea656ea7c8a4b3a24e9c0c4" => :mavericks
-    sha256 "faa88d9f1843b9cbb1d8361162c86eee20e72359c4c35feb7ff9a71e318878a1" => :mountain_lion
+    sha256 "e2083203128b7738258112f03c8300639263b3b01b2b453e346d70eab482d28b" => :el_capitan
+    sha256 "a18f8e98bdc3f71b6ea7100161a4ffa9bbc12c2df068db1599b1cbdae4c97b5c" => :yosemite
+    sha256 "e0d9dd6882fef5c7f325499d9f2e5917c1734ba154e661b916df02c73724a79d" => :mavericks
   end
 
   depends_on :python3
