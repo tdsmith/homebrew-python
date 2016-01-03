@@ -39,9 +39,10 @@ class Matplotlib < Formula
   head "https://github.com/matplotlib/matplotlib.git"
 
   bottle do
-    sha256 "b3f67caebdcf086943f973fda99e4f5c7bbc3f72b82623bfbed4ffe027376aef" => :yosemite
-    sha256 "9ac2bc778d212248e93e758e9b0c1ac495012d904dac88c269f9882342a4503b" => :mavericks
-    sha256 "bebebabfa0adfc74e18db8ced70c4aa32effc202a1bb960a67f9164bff688798" => :mountain_lion
+    cellar :any
+    sha256 "eab63bebea26e993c023a4c0e51a37fdad8e9cbf467dc797de8cf440f462ac06" => :el_capitan
+    sha256 "d88a158c22a9607874359d85d4a0c5ed2370d429a9bd15471800d1977f58c7df" => :yosemite
+    sha256 "53b84fa2e9977618451d3d6e909cf7ada62a5164c998d8029c8aab1aecf4076b" => :mavericks
   end
 
   option "without-python", "Build without python2 support"
