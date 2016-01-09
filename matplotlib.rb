@@ -152,7 +152,7 @@ class Matplotlib < Formula
     Language::Python.each_python(build) do |python, version|
       bundle_path = libexec/"lib/python#{version}/site-packages"
       bundle_path.mkpath
-      ENV.append_path "PYTHONPATH", bundle_path
+      ENV.prepend_path "PYTHONPATH", bundle_path
       resources.each do |r|
         r.stage do
           system python, *Language::Python.setup_install_args(libexec)
