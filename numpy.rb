@@ -1,4 +1,5 @@
 class Numpy < Formula
+  desc "Package for scientific computing with Python"
   homepage "http://www.numpy.org"
   url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.1.tar.gz"
   sha256 "8b9f453f29ce96a14e625100d3dcf8926301d36c5f622623bf8820e748510858"
@@ -59,14 +60,8 @@ class Numpy < Formula
     end
   end
 
-  test do
-    Language::Python.each_python(build) do |python, _version|
-      system python, "-c", "import numpy; numpy.test()"
-    end
-  end
-
   def caveats
-    if build.with? "python" && !Formula["python"].installed?
+    if build.with?("python") && !Formula["python"].installed?
       homebrew_site_packages = Language::Python.homebrew_site_packages
       user_site_packages = Language::Python.user_site_packages "python"
       <<-EOS.undent
@@ -76,6 +71,12 @@ class Numpy < Formula
           mkdir -p #{user_site_packages}
           echo 'import sys; sys.path.insert(1, "#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
       EOS
+    end
+  end
+
+  test do
+    Language::Python.each_python(build) do |python, _version|
+      system python, "-c", "import numpy; numpy.test()"
     end
   end
 end
