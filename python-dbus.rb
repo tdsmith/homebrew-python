@@ -1,5 +1,6 @@
 class PythonDbus < Formula
-  homepage "https://freedesktop.org"
+  desc "Python bindings for libdbus"
+  homepage "http://dbus.freedesktop.org/doc/dbus-python/"
   url "http://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.0.tar.gz"
   sha256 "e12c6c8b2bf3a9302f75166952cbe41d6b38c3441bbc6767dbd498942316c6df"
 
