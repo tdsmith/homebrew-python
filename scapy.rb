@@ -1,5 +1,6 @@
 class Scapy < Formula
-  homepage 'http://www.secdev.org/projects/scapy/'
+  desc "Powerful interactive packet manipulation program"
+  homepage "http://www.secdev.org/projects/scapy/"
   url "https://bitbucket.org/secdev/scapy/downloads/scapy-2.3.1.zip"
   sha256 "8972c02e39a826a10c02c2bdd5025f7251dce9589c57befd9bb55c65f02e4934"
   head "https://bitbucket.org/secdev/scapy", :using => :hg
@@ -24,6 +25,6 @@ class Scapy < Formula
 
   test do
     command = "rdpcap('#{test_fixtures("test.pcap")}')"
-    assert_match /TCP/, pipe_output(bin/"scapy", command)
+    assert_match "TCP", pipe_output(bin/"scapy", command)
   end
 end
