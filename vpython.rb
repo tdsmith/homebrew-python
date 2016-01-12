@@ -1,14 +1,15 @@
 class Vpython < Formula
+  desc "Python with a 3D graphics module"
+  homepage "http://vpython.org/"
   url "https://github.com/BruceSherwood/vpython-wx/archive/v6.11.tar.gz"
   sha256 "5fcc87d401d6d39c9044979f2f9a5286a277504b26465eb6c89bfa7ec4a9783d"
   head "https://github.com/BruceSherwood/vpython-wx.git"
+
   bottle do
     sha256 "54163d86963ed9c8706e564012947c46719c8bb7c0ed8c21e1b71a0a0f9a424e" => :yosemite
     sha256 "b40e535dc217729b55f3cf82bfa48fb830abd50341acff828f14fea0e9cc1ece" => :mavericks
     sha256 "b354b9d7813c54046c4bb6edd72c866c3ea24b816e6bd02c937612ca36db24da" => :mountain_lion
   end
-
-  homepage "http://vpython.org/"
 
   depends_on "homebrew/python/numpy"
   depends_on "wxpython"
