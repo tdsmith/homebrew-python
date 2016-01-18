@@ -7,9 +7,9 @@ class Numpy < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4a2fbe6a4d8e9db2e487ff841b7c2e0b0c5f79d5c42038ae8c6adaa182a2c43c" => :el_capitan
-    sha256 "77cf3c617dc31defa21216f66712eaaea41a49ff15ad749e55bff92e18314ec4" => :yosemite
-    sha256 "648830025c477e99bff7ccda3bf4a12d2e05f0c66ca9e0467f5aa642b6d7bb21" => :mavericks
+    sha256 "6aa55385baad3df7b22edbcf8a8fda407e73a98dffb0fb5370705d2184806fd2" => :el_capitan
+    sha256 "a6d8ff26322d381fbb863e47aeda1a8f727b981f1d274e27b5f3d3f9b590c522" => :yosemite
+    sha256 "d14df008d4b178f7ace9d06fd18de710050b53a9ef9b14a9fcedc6b21903199c" => :mavericks
   end
 
   option "without-python", "Build without python2 support"
