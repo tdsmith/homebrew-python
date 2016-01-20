@@ -76,7 +76,7 @@ class Numpy < Formula
 
   test do
     Language::Python.each_python(build) do |python, _version|
-      system python, "-c", "import numpy; numpy.test()"
+      system python, "-c", "import numpy; assert numpy.test().wasSuccessful()"
     end
   end
 end
