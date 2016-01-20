@@ -101,7 +101,7 @@ class Scipy < Formula
 
   test do
     Language::Python.each_python(build) do |python, _version|
-      system python, "-c", "import scipy; assert not scipy.test().failures"
+      system python, "-c", "import scipy; assert scipy.test().wasSuccessful()"
     end
   end
 end
