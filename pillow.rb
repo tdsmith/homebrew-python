@@ -1,7 +1,7 @@
 class Pillow < Formula
   homepage "https://github.com/python-imaging/Pillow"
-  url "https://github.com/python-pillow/Pillow/archive/2.7.0.tar.gz"
-  sha256 "21872174a58674cdc20dba44d02f1d4cfe181214eb16793ad3d2830d45c59922"
+  url "https://github.com/python-pillow/Pillow/archive/3.1.1.tar.gz"
+  sha256 "a2ab64b39378031effdd86a6cd303de7b5b606445ab0338359e9ff9dc3f2e634"
   head "https://github.com/python-imaging/Pillow.git"
 
   bottle do
@@ -24,10 +24,6 @@ class Pillow < Formula
   depends_on "webp" => :recommended
   # depends_on "homebrew/versions/openjpeg21" if build.with? "openjpeg"
 
-  # Don't automatically detect Tcl or Tk in /Library
-  # Fixes https://github.com/Homebrew/homebrew-python/issues/190
-  patch :DATA
-
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.3.tar.gz"
     sha256 "b40c2ff268beb85356ada25f626ca0dabc89705f31051649772cf00fc9510326"
@@ -35,6 +31,10 @@ class Pillow < Formula
 
   def install
     inreplace "setup.py" do |s|
+      # Don't automatically detect Tcl or Tk in /Library
+      # Fixes https://github.com/Homebrew/homebrew-python/issues/190
+      s.gsub! '"/Library/Frameworks",', ""
+
       s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{MacOS.sdk_path}/usr/lib', '#{MacOS.sdk_path}/usr/include')" unless MacOS::CLT.installed?
       s.gsub! "LCMS_ROOT = None", "LCMS_ROOT = ('#{Formula["little-cms2"].opt_prefix}/lib', '#{Formula["little-cms2"].opt_prefix}/include')" if build.with? "little-cms2"
       s.gsub! "JPEG_ROOT = None", "JPEG_ROOT = ('#{Formula["jpeg"].opt_prefix}/lib', '#{Formula["jpeg"].opt_prefix}/include')"
@@ -69,16 +69,3 @@ class Pillow < Formula
     end
   end
 end
-__END__
-diff --git a/setup.py b/setup.py
-index 90687d5..f11fb3a 100644
---- a/setup.py
-+++ b/setup.py
-@@ -579,7 +579,6 @@ class pil_build_ext(build_ext):
-             # locate Tcl/Tk frameworks
-             frameworks = []
-             framework_roots = [
--                "/Library/Frameworks",
-                 "/System/Library/Frameworks"]
-             for root in framework_roots:
-                 if (
