@@ -34,8 +34,8 @@ end
 
 class Matplotlib < Formula
   homepage "http://matplotlib.org"
-  url "https://pypi.python.org/packages/source/m/matplotlib/matplotlib-1.5.0.tar.gz"
-  sha256 "67b08b1650a00a6317d94b76a30a47320087e5244920604c5462188cba0c2646"
+  url "https://pypi.python.org/packages/source/m/matplotlib/matplotlib-1.5.1.tar.gz"
+  sha256 "3ab8d968eac602145642d0db63dd8d67c85e9a5444ce0e2ecb2a8fedc7224d40"
   head "https://github.com/matplotlib/matplotlib.git"
 
   bottle do
