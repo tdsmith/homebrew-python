@@ -1,8 +1,8 @@
 class Numba < Formula
   desc "NumPy aware dynamic Python compiler using LLVM"
   homepage "http://numba.pydata.org/"
-  url "https://pypi.python.org/packages/source/n/numba/numba-0.21.0.tar.gz"
-  sha256 "1806d2f6ad49ad891e9ac6fed0cc0b0489cbfcd9ba2dc81081c1c30091e77604"
+  url "https://pypi.python.org/packages/source/n/numba/numba-0.23.1.tar.gz"
+  sha256 "80ce9968591db7c93e36258cc5e6734eb1e42826332799746dc6c073a6d5d317"
 
   bottle do
     sha256 "51ef0baa6f63d3bb88e1a4c94ff36464255dbb886563d5fa047269dc5e28fcb5" => :el_capitan
@@ -27,8 +27,8 @@ class Numba < Formula
   end
 
   resource "llvmlite" do
-    url "https://pypi.python.org/packages/source/l/llvmlite/llvmlite-0.7.0.tar.gz"
-    sha256 "6d780980da05d2d82465991bce42c1b4625018d67feae17c672c6a9d5ad0bb1a"
+    url "https://pypi.python.org/packages/source/l/llvmlite/llvmlite-0.8.0.tar.gz"
+    sha256 "a10d8d5e597c6a54ec418baddd31a51a0b7937a895d75b240d890aead946081c"
   end
 
   resource "singledispatch" do
