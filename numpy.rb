@@ -1,8 +1,8 @@
 class Numpy < Formula
   desc "Package for scientific computing with Python"
   homepage "http://www.numpy.org"
-  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.4.tar.gz"
-  sha256 "7356e98fbcc529e8d540666f5a919912752e569150e9a4f8d869c686f14c720b"
+  url "https://pypi.python.org/packages/source/n/numpy/numpy-1.11.0.tar.gz"
+  sha256 "a1d1268d200816bfb9727a7a27b78d8e37ecec2e4d5ebd33eb64e2789e0db43e"
   head "https://github.com/numpy/numpy.git"
 
   bottle do
@@ -48,15 +48,19 @@ class Numpy < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
+      dest_path = lib/"python#{version}/site-packages"
+      dest_path.mkpath
+
       resource("nose").stage do
         system python, *Language::Python.setup_install_args(libexec/"nose")
         nose_path = libexec/"nose/lib/python#{version}/site-packages"
-        dest_path = lib/"python#{version}/site-packages"
-        mkdir_p dest_path
         (dest_path/"homebrew-numpy-nose.pth").write "#{nose_path}\n"
       end
-      system python, "setup.py", "build", "--fcompiler=gnu95",
-                     "install", "--prefix=#{prefix}"
+
+      system python, "setup.py",
+        "build", "--fcompiler=gnu95", "--parallel=#{ENV.make_jobs}",
+        "install", "--prefix=#{prefix}",
+        "--single-version-externally-managed", "--record=installed.txt"
     end
   end
 
