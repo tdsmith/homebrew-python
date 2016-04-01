@@ -1,7 +1,7 @@
 class Pillow < Formula
   homepage "https://github.com/python-imaging/Pillow"
-  url "https://github.com/python-pillow/Pillow/archive/3.1.1.tar.gz"
-  sha256 "a2ab64b39378031effdd86a6cd303de7b5b606445ab0338359e9ff9dc3f2e634"
+  url "https://github.com/python-pillow/Pillow/archive/3.2.0.tar.gz"
+  sha256 "eb4b9c2956e38f89d588a0d0af0e27a03f1e1d2be705a828bbd12cfba0b020fa"
   head "https://github.com/python-imaging/Pillow.git"
 
   bottle do
@@ -36,7 +36,8 @@ class Pillow < Formula
       # Fixes https://github.com/Homebrew/homebrew-python/issues/190
       s.gsub! '"/Library/Frameworks",', ""
 
-      s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{MacOS.sdk_path}/usr/lib', '#{MacOS.sdk_path}/usr/include')" unless MacOS::CLT.installed?
+      sdkprefix = MacOS::CLT.installed? ? "" : MacOS.sdk_path
+      s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
       s.gsub! "LCMS_ROOT = None", "LCMS_ROOT = ('#{Formula["little-cms2"].opt_prefix}/lib', '#{Formula["little-cms2"].opt_prefix}/include')" if build.with? "little-cms2"
       s.gsub! "JPEG_ROOT = None", "JPEG_ROOT = ('#{Formula["jpeg"].opt_prefix}/lib', '#{Formula["jpeg"].opt_prefix}/include')"
       # s.gsub! "JPEG2K_ROOT = None", "JPEG2K_ROOT = ('#{Formula["openjpeg21"].opt_prefix}/lib', '#{Formula["openjpeg21"].opt_prefix}/include')" if build.with? "openjpeg"
@@ -44,6 +45,8 @@ class Pillow < Formula
       s.gsub! "FREETYPE_ROOT = None", "FREETYPE_ROOT = ('#{Formula["freetype"].opt_prefix}/lib', '#{Formula["freetype"].opt_prefix}/include')"
     end
 
+    # avoid triggering "helpful" distutils code that doesn't recognize Xcode 7 .tbd stubs
+    ENV.delete "SDKROOT"
     ENV.append "CFLAGS", "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers" unless MacOS::CLT.installed?
 
     Language::Python.each_python(build) do |python, version|
@@ -65,7 +68,7 @@ class Pillow < Formula
 
   test do
     cp_r prefix/"Tests", testpath
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system "#{python} -m nose Tests/test_*"
     end
   end
