@@ -1,8 +1,8 @@
 class Scipy < Formula
   desc "Software for mathematics, science, and engineering"
   homepage "http://www.scipy.org"
-  url "https://pypi.python.org/packages/source/s/scipy/scipy-0.17.0.tar.gz"
-  sha256 "f600b755fb69437d0f70361f9e560ab4d304b1b66987ed5a28bdd9dd7793e089"
+  url "https://github.com/scipy/scipy/releases/download/v0.17.1/scipy-0.17.1.tar.gz"
+  sha256 "9c4cd2f8013cc4084230a0e858d7642963dbadfd76494d2fad3b0b29bebb38ac"
   head "https://github.com/scipy/scipy.git"
 
   bottle do
