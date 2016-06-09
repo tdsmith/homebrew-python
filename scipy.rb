@@ -4,6 +4,7 @@ class Scipy < Formula
   url "https://github.com/scipy/scipy/releases/download/v0.17.1/scipy-0.17.1.tar.gz"
   sha256 "9c4cd2f8013cc4084230a0e858d7642963dbadfd76494d2fad3b0b29bebb38ac"
   head "https://github.com/scipy/scipy.git"
+  revision 1
 
   bottle do
     sha256 "28b44c33043b732338d63f24592e55e4f4f44bdff34c976dd8212f2444dc6c49" => :el_capitan
