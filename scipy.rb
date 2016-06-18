@@ -7,9 +7,9 @@ class Scipy < Formula
   revision 1
 
   bottle do
-    sha256 "28b44c33043b732338d63f24592e55e4f4f44bdff34c976dd8212f2444dc6c49" => :el_capitan
-    sha256 "6e10006a8feb13bad9eef711652070b61f5fdfeaf792d875bf438ccfce827731" => :yosemite
-    sha256 "216c4458963f3df19fae0b72bdb579163392c5d8fe75edecf7e573a922c640f6" => :mavericks
+    sha256 "7a524e102649ccfc615d5be7f021e4c8bc5c7e673e7b098bec3685336ae1d332" => :el_capitan
+    sha256 "8f3e3c3c79aa5a0145fc78cdabc11c2ac37403e7fb99974237295830d6a1cfef" => :yosemite
+    sha256 "d8470f2bf519bf90e46e263999aac0f094dad7566768b9b7df2a687b4e49de87" => :mavericks
   end
 
   option "without-python", "Build without python2 support"
