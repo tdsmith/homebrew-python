@@ -5,9 +5,9 @@ class Numba < Formula
   sha256 "84547fdd19783104a37f3662a45b8b32f940b2af55d2eb0467dc782af43420aa"
 
   bottle do
-    sha256 "6819683ae11a1fc89b9e99c10c94e85ea5a8973df354687ee2c4aa43e7f5d579" => :el_capitan
-    sha256 "fd96119f466ce803c840b1fdda51369df7640b335e1a569245575dbe4c4f8794" => :yosemite
-    sha256 "f3234cb6e634c95ca604ffa9f95e8df70b829764877b24bf0503ae6338e4f5d4" => :mavericks
+    sha256 "e3635a687c3ed18eb5a27eac6bad35606ffac9d15b3bf08a720b842002b28c23" => :el_capitan
+    sha256 "5a794987a2c29468df03c2de9190b3de2e8455b93613ff58bbbf80ccfdbdf94a" => :yosemite
+    sha256 "c6238cae92bb8065273b040709fe702b8a2f3474c26fef8fa830c6545b632a43" => :mavericks
   end
 
   option "without-python", "Build without python2 support"
