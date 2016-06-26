@@ -16,8 +16,9 @@ class Numpy < Formula
 
   depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
-  depends_on :fortran
+  depends_on :fortran => :build
 
+  option "without-check", "Don't run tests during installation"
   option "with-openblas", "Use openBLAS instead of Apple's Accelerate Framework"
   depends_on "homebrew/science/openblas" => (OS.mac? ? :optional : :recommended)
 
@@ -51,9 +52,9 @@ class Numpy < Formula
       dest_path = lib/"python#{version}/site-packages"
       dest_path.mkpath
 
+      nose_path = libexec/"nose/lib/python#{version}/site-packages"
       resource("nose").stage do
         system python, *Language::Python.setup_install_args(libexec/"nose")
-        nose_path = libexec/"nose/lib/python#{version}/site-packages"
         (dest_path/"homebrew-numpy-nose.pth").write "#{nose_path}\n"
       end
 
@@ -61,6 +62,26 @@ class Numpy < Formula
         "build", "--fcompiler=gnu95", "--parallel=#{ENV.make_jobs}",
         "install", "--prefix=#{prefix}",
         "--single-version-externally-managed", "--record=installed.txt"
+
+      if build.with? "check"
+        cd HOMEBREW_TEMP do
+          with_environment({
+            "PYTHONPATH" => "#{dest_path}:#{nose_path}",
+            "PATH" => "#{bin}:#{ENV["PATH"]}"}) do
+              system python, "-c", "import numpy; assert numpy.test().wasSuccessful()"
+            end
+        end
+      end
+    end
+  end
+
+  def with_environment(h)
+    old = Hash[h.keys.map { |k| [k, ENV[k]] }]
+    ENV.update h
+    begin
+      yield
+    ensure
+      ENV.update old
     end
   end
 
@@ -79,8 +100,11 @@ class Numpy < Formula
   end
 
   test do
-    Language::Python.each_python(build) do |python, _version|
-      system python, "-c", "import numpy; assert numpy.test().wasSuccessful()"
-    end
+    system "python", "-c", <<-EOS.undent
+      import numpy as np
+      t = np.ones((3,3), int)
+      assert t.sum() == 9
+      assert np.dot(t, t).sum() == 27
+    EOS
   end
 end
