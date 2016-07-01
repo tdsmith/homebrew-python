@@ -1,7 +1,7 @@
 class Pillow < Formula
   homepage "https://github.com/python-imaging/Pillow"
-  url "https://github.com/python-pillow/Pillow/archive/3.2.0.tar.gz"
-  sha256 "eb4b9c2956e38f89d588a0d0af0e27a03f1e1d2be705a828bbd12cfba0b020fa"
+  url "https://github.com/python-pillow/Pillow/archive/3.3.0.tar.gz"
+  sha256 "ae2fbb500c81100f7e374545d008019e6f90918386f620625c3b3b98faf88414"
   head "https://github.com/python-imaging/Pillow.git"
 
   bottle do
@@ -32,10 +32,6 @@ class Pillow < Formula
 
   def install
     inreplace "setup.py" do |s|
-      # Don't automatically detect Tcl or Tk in /Library
-      # Fixes https://github.com/Homebrew/homebrew-python/issues/190
-      s.gsub! '"/Library/Frameworks",', ""
-
       sdkprefix = MacOS::CLT.installed? ? "" : MacOS.sdk_path
       s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
       s.gsub! "LCMS_ROOT = None", "LCMS_ROOT = ('#{Formula["little-cms2"].opt_prefix}/lib', '#{Formula["little-cms2"].opt_prefix}/include')" if build.with? "little-cms2"
