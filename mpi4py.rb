@@ -4,6 +4,13 @@ class Mpi4py < Formula
   url "https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-2.0.0.tar.gz"
   sha256 "6543a05851a7aa1e6d165e673d422ba24e45c41e4221f0993fe1e5924a00cb81"
 
+  bottle do
+    cellar :any
+    sha256 "c831eb7752f7117ac8a72f5fccfe93413085bab7628a610fb756e5b46f51a027" => :el_capitan
+    sha256 "ba0a5c9cd39e380525252d0ecc271a75b787588b531e10a3e762d966de082ec3" => :yosemite
+    sha256 "c4cd1d1e2bd722d6cf154cf083ebf463e6588b0046f8d4ae6b1713c436450281" => :mavericks
+  end
+
   head do
     url "https://bitbucket.org/mpi4py/mpi4py.git"
 
