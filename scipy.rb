@@ -18,6 +18,7 @@ class Scipy < Formula
   depends_on :python3 => :optional
   depends_on :fortran
 
+  option "with-check", "Run tests"
   option "with-openblas", "Use openblas instead of Apple's Accelerate framework " \
                           "(required to build with gcc on OS X)"
   depends_on "homebrew/science/openblas" => (OS.mac? ? :optional : :recommended)
@@ -74,7 +75,16 @@ class Scipy < Formula
       ENV.prepend_create_path "PYTHONPATH", lib/"python#{version}/site-packages"
       system python, "setup.py", "build", "--fcompiler=gnu95"
       system python, *Language::Python.setup_install_args(prefix)
+      if build.with?("check") || build.bottle?
+        cd ".." do
+          tmpdir = buildpath/"homebrew-scratch"
+          tmpdir.mkpath
+          ENV["TMPDIR"] = tmpdir
+          system python, "-c", "import scipy; assert scipy.test().wasSuccessful()"
+        end
+      end
     end
+
   end
 
   # cleanup leftover .pyc files from previous installs which can cause problems
@@ -100,8 +110,6 @@ class Scipy < Formula
   end
 
   test do
-    Language::Python.each_python(build) do |python, _version|
-      system python, "-c", "import scipy; assert scipy.test().wasSuccessful()"
-    end
+    system "python", "-c", "import scipy"
   end
 end
