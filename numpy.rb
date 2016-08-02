@@ -30,7 +30,10 @@ class Numpy < Formula
   def install
     # https://github.com/numpy/numpy/issues/4203
     # https://github.com/Homebrew/homebrew-python/issues/209
-    ENV.append "LDFLAGS", "-shared" if OS.linux?
+    if OS.linux?
+      ENV.append "LDFLAGS", "-shared"
+      ENV.append "FFLAGS", "-fPIC"
+    end
 
     if build.with? "openblas"
       openblas_dir = Formula["openblas"].opt_prefix
