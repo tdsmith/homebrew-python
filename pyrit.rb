@@ -18,6 +18,6 @@ class Pyrit < Formula
   end
 
   test do
-    system python, "-c", "import pyrit_cli"
+    system "python", "-c", "import pyrit_cli"
   end
 end
