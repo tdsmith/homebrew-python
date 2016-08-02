@@ -12,6 +12,7 @@ class Pyrit < Formula
 
   depends_on "libdnet"
   depends_on "scapy"
+  depends_on "openssl"
 
   def install
     system "python", *Language::Python.setup_install_args(prefix)
