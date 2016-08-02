@@ -1,10 +1,9 @@
 class Scipy < Formula
   desc "Software for mathematics, science, and engineering"
   homepage "http://www.scipy.org"
-  url "https://github.com/scipy/scipy/releases/download/v0.17.1/scipy-0.17.1.tar.gz"
-  sha256 "9c4cd2f8013cc4084230a0e858d7642963dbadfd76494d2fad3b0b29bebb38ac"
+  url "https://files.pythonhosted.org/packages/01/a1/dce70d47377d662aa4b0895df8431aee92cea6faefaab9dae21b0f901ded/scipy-0.18.0.tar.gz"
+  sha256 "f01784fb1c2bc246d4211f2482ecf4369db5abaecb9d5afb9d94f6c59663286a"
   head "https://github.com/scipy/scipy.git"
-  revision 1
 
   bottle do
     sha256 "7a524e102649ccfc615d5be7f021e4c8bc5c7e673e7b098bec3685336ae1d332" => :el_capitan
