@@ -20,6 +20,6 @@ class CpyritOpencl < Formula
   end
 
   test do
-    system python, "-c", "import _cpyrit_opencl"
+    system "python", "-c", "import _cpyrit_opencl"
   end
 end
