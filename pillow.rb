@@ -6,9 +6,9 @@ class Pillow < Formula
 
   bottle do
     cellar :any
-    sha256 "55632af55d7807a0155741afa47fa55df03ab90a7e2205f416a0c3ba67c26346" => :el_capitan
-    sha256 "ca74fb008d6afc4096bf5a7bde183102ad5811b7437d68e85e03595fddb87a0d" => :yosemite
-    sha256 "3a13cfb52b885d5d5e7cb9f0c9b49d7d91cd661f3f0aafbe0e823709190cb65d" => :mavericks
+    sha256 "dcc24bf458262f8e29457163985d4f5ddc2d2e6b5f7cb0777d5c9ff16c51f262" => :el_capitan
+    sha256 "5c6fd6432f7f839ecfb90b94e18f26d25ac7cbc070edf567c4270bffdb1d9ff0" => :yosemite
+    sha256 "d737d10606844d14166e1e9e8c2c1a01890736d8a249a20aa1167efaf96a3a2c" => :mavericks
   end
 
   # waiting on upstream resolution of JPEG2000 issues
