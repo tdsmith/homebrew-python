@@ -1,7 +1,7 @@
 class Pillow < Formula
   homepage "https://github.com/python-imaging/Pillow"
-  url "https://github.com/python-pillow/Pillow/archive/3.3.0.tar.gz"
-  sha256 "ae2fbb500c81100f7e374545d008019e6f90918386f620625c3b3b98faf88414"
+  url "https://github.com/python-pillow/Pillow/archive/3.3.1.tar.gz"
+  sha256 "c76258246a157e99e745805098c25ae289bcdca4b56e5cf035daea091970e597"
   head "https://github.com/python-imaging/Pillow.git"
 
   bottle do
@@ -23,7 +23,7 @@ class Pillow < Formula
   depends_on "libtiff" => :recommended
   depends_on "little-cms2" => :recommended
   depends_on "webp" => :recommended
-  # depends_on "homebrew/versions/openjpeg21" if build.with? "openjpeg"
+  depends_on "openjpeg" if build.with? "openjpeg"
 
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.3.tar.gz"
@@ -36,7 +36,7 @@ class Pillow < Formula
       s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
       s.gsub! "LCMS_ROOT = None", "LCMS_ROOT = ('#{Formula["little-cms2"].opt_prefix}/lib', '#{Formula["little-cms2"].opt_prefix}/include')" if build.with? "little-cms2"
       s.gsub! "JPEG_ROOT = None", "JPEG_ROOT = ('#{Formula["jpeg"].opt_prefix}/lib', '#{Formula["jpeg"].opt_prefix}/include')"
-      # s.gsub! "JPEG2K_ROOT = None", "JPEG2K_ROOT = ('#{Formula["openjpeg21"].opt_prefix}/lib', '#{Formula["openjpeg21"].opt_prefix}/include')" if build.with? "openjpeg"
+      s.gsub! "JPEG2K_ROOT = None", "JPEG2K_ROOT = ('#{Formula["openjpeg"].opt_prefix}/lib', '#{Formula["openjpeg"].opt_prefix}/include')" if build.with? "openjpeg"
       s.gsub! "TIFF_ROOT = None", "TIFF_ROOT = ('#{Formula["libtiff"].opt_prefix}/lib', '#{Formula["libtiff"].opt_prefix}/include')" if build.with? "libtiff"
       s.gsub! "FREETYPE_ROOT = None", "FREETYPE_ROOT = ('#{Formula["freetype"].opt_prefix}/lib', '#{Formula["freetype"].opt_prefix}/include')"
     end
@@ -54,8 +54,7 @@ class Pillow < Formula
         (dest_path/"homebrew-pillow-nose.pth").atomic_write(nose_path.to_s + "\n")
         ENV.append_path "PYTHONPATH", nose_path
       end
-      # don't accidentally discover openjpeg since it isn't working
-      system python, "setup.py", "build_ext", "--disable-jpeg2000" # if build.without? "openjpeg"
+      system python, "setup.py", "build_ext"
       system python, *Language::Python.setup_install_args(prefix)
     end
 
