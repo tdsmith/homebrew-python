@@ -1,9 +1,9 @@
 class Scapy < Formula
   desc "Powerful interactive packet manipulation program"
   homepage "http://www.secdev.org/projects/scapy/"
-  url "https://bitbucket.org/secdev/scapy/downloads/scapy-2.3.1.zip"
-  sha256 "8972c02e39a826a10c02c2bdd5025f7251dce9589c57befd9bb55c65f02e4934"
-  head "https://bitbucket.org/secdev/scapy", :using => :hg
+  url "https://github.com/secdev/scapy/archive/v2.3.2.tar.gz"
+  sha256 "3de539ca67dd39e41287f0b36afd85188bd437604092726684c98debd816df01"
+  head "https://github.com/secdev/scapy.git"
 
   depends_on :python
   depends_on "libdnet"
