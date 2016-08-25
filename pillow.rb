@@ -23,7 +23,7 @@ class Pillow < Formula
   depends_on "libtiff" => :recommended
   depends_on "little-cms2" => :recommended
   depends_on "webp" => :recommended
-  depends_on "openjpeg" if build.with? "openjpeg"
+  depends_on "openjpeg" => :optional
 
   resource "nose" do
     url "https://pypi.python.org/packages/source/n/nose/nose-1.3.3.tar.gz"
