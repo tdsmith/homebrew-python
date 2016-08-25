@@ -33,6 +33,7 @@ class NoExternalPyCXXPackage < Requirement
 end
 
 class Matplotlib < Formula
+  desc "Python 2D plotting library"
   homepage "http://matplotlib.org"
   url "https://pypi.python.org/packages/source/m/matplotlib/matplotlib-1.5.1.tar.gz"
   sha256 "3ab8d968eac602145642d0db63dd8d67c85e9a5444ce0e2ecb2a8fedc7224d40"
