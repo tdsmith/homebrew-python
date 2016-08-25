@@ -2,7 +2,7 @@ class Scapy < Formula
   desc "Powerful interactive packet manipulation program"
   homepage "http://www.secdev.org/projects/scapy/"
   url "https://github.com/secdev/scapy/archive/v2.3.2.tar.gz"
-  sha256 "3de539ca67dd39e41287f0b36afd85188bd437604092726684c98debd816df01"
+  sha256 "1b8a86d687feb8ed01114c0c016b428674cbfec04e3eb6f5249a018c427c4f6a"
   head "https://github.com/secdev/scapy.git"
 
   bottle do
