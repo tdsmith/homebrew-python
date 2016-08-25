@@ -5,6 +5,13 @@ class Aeneas < Formula
   sha256 "349ee38c41ef8a3dda70e476185de0be51fede7e1bc2f9007923b58be524f25e"
   head "https://github.com/readbeyond/aeneas.git"
 
+  bottle do
+    cellar :any
+    sha256 "d41f1068fff0b6687d52523fc23f5553074093f26a470d719ef7444a5b9cff99" => :el_capitan
+    sha256 "f2262f714c29d7fe662c97270675df81bcfee692e21f7535f31e102152258e8b" => :yosemite
+    sha256 "6116f2c5fcf947ed4d6381f81af3e548f98cffa586faf1456fc2384084c39107" => :mavericks
+  end
+
   depends_on "espeak" => :recommended
   depends_on "ffmpeg" => :recommended
   depends_on :python3 => :optional
