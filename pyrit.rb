@@ -1,5 +1,5 @@
 class Pyrit < Formula
-  desc "Pyrit allows to attack against WPA-PSK authentication"
+  desc "Attack against WPA-PSK authentication"
   homepage "https://code.google.com/p/pyrit/"
   url "https://pyrit.googlecode.com/files/pyrit-0.4.0.tar.gz"
   sha256 "eb1a21cb844b1ded3eab613a8e9d5e4ef901530b04668fb18fe82ed1b4afa7cc"
