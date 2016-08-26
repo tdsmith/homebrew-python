@@ -23,6 +23,11 @@ class H5py < Formula
     sha256 "84808fda00508757928e1feadcf41c9f78e9a9b7167b6649ab0933b76f75e7b9"
   end
 
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/b3/b2/238e2590826bfdd113244a40d9d3eb26918bd798fc187e2360a8367068db/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+  end
+
   def install
     Language::Python.each_python(build) do |python, version|
       ENV.prepend_create_path "PATH", buildpath/"vendor/bin"
@@ -30,6 +35,13 @@ class H5py < Formula
       resource("cython").stage do
         system python, *Language::Python.setup_install_args(buildpath/"vendor")
       end
+
+      bundle_path = libexec/"lib/python#{version}/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", bundle_path
+      resource("six").stage do
+        system python, *Language::Python.setup_install_args(libexec)
+      end
+      (lib/"python#{version}/site-packages/homebrew-h5py-bundle.pth").write "#{bundle_path}\n"
 
       args = Language::Python.setup_install_args(prefix)
       args << "configure"
